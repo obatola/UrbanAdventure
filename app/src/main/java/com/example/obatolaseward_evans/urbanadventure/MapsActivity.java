@@ -10,13 +10,21 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private HashMap<String, Location> allLocations = new HashMap<String, Location>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Grab all locations
+        generateLocations();
+
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -38,8 +46,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in WPI and move the camera
-        LatLng wpi = new LatLng(42.2746, -71.8063);
-        mMap.addMarker(new MarkerOptions().position(wpi).title("Marker in WPI"));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(wpi, 16));
+        Location wpi = allLocations.get("wpi");
+        if (wpi != null) {
+            mMap.addMarker(new MarkerOptions().position(wpi.getLatLng()).title(wpi.getTitle()));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(wpi.getLatLng(), 16));
+        }
+
+    }
+
+    /** Temporary location generator
+     *
+     * Creates a set of locations to populate the map
+     * This should later be handled in a database.
+     */
+    public void generateLocations() {
+        Location wpi = new Location("Worcester Polytechnic Institute", "A college", 42.2746, -71.8063);
+        allLocations.put("wpi", wpi);
+
+        
     }
 }

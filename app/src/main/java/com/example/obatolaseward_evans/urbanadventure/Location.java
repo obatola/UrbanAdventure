@@ -1,5 +1,7 @@
 package com.example.obatolaseward_evans.urbanadventure;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by Penthoue on 2/20/2017.
  */
@@ -44,5 +46,9 @@ public class Location {
 
     public double getLongitude() {
         return longitude;
+    }
+
+    public LatLng getLatLng() {
+        return new LatLng(latitude, longitude);
     }
 }
