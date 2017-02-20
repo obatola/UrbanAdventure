@@ -12,6 +12,7 @@ public class Location {
     private String description;
     private double longitude;
     private double latitude;
+    private boolean hasVisited;
 
     public Location() {
         title = "";
@@ -19,6 +20,7 @@ public class Location {
         description = "";
         longitude = 0;
         latitude = 0;
+        hasVisited = false;
     }
 
     public Location(String newTitle, String newDescription, double newLatitude, double newLongitude) {
@@ -50,5 +52,13 @@ public class Location {
 
     public LatLng getLatLng() {
         return new LatLng(latitude, longitude);
+    }
+
+    public boolean hasVisited() {
+        return hasVisited;
+    }
+
+    public void setHasVisited(boolean bool) {
+        hasVisited = bool;
     }
 }

@@ -7,6 +7,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -73,6 +74,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Location library = new Location("Gordon Library", "A college", 42.275006, -71.806353); // done
         Location campusCenter = new Location("Campus Center", "A college", 42.274907, -71.808482); // done
 
+        // TODO: remove the next line in production code
+        campusCenter.setHasVisited(true);
+
         allLocations.add(wpi);
         allLocations.add(recCenter);
         allLocations.add(beanCounter);
@@ -83,9 +87,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         allLocations.add(campusCenter);
     }
 
+    // Populate map with markers in allLocations
     public void  populateMap(GoogleMap map){
+        float markerColor;
+
         for (Location loc: allLocations) {
-            map.addMarker(new MarkerOptions().position(loc.getLatLng()).title(loc.getTitle()));
+            if (loc.hasVisited()) {
+                markerColor = BitmapDescriptorFactory.HUE_CYAN;
+            } else {
+                markerColor = BitmapDescriptorFactory.HUE_RED;
+            }
+
+            map.addMarker(new MarkerOptions()
+                    .position(loc.getLatLng()).title(loc.getTitle())
+                    .icon(BitmapDescriptorFactory
+                            .defaultMarker(markerColor)));
         }
     }
 }
