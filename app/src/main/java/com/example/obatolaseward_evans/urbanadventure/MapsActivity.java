@@ -65,19 +65,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * This should later be handled in a database.
      */
     public void generateLocations() {
-        Location wpi = new Location("Worcester Polytechnic Institute", "A college", 42.2746, -71.8063); // done
-        Location recCenter = new Location("Rec Center", "A college", 42.274205, -71.810708); // done
-        Location beanCounter = new Location("The Bean Counter", "A college", 42.271729, -71.807335); // done
-        Location fullerLabs = new Location("Fuller Labs", "A college", 42.275060, -71.806522); // done
-        Location wam = new Location("Worcester Art Museum", "A college", 42.273345, -71.801973); // done
-        Location moorePond = new Location("Moore Pond", "A college", 42.313249, -71.957684); // done
-        Location library = new Location("Gordon Library", "A college", 42.275006, -71.806353); // done
-        Location campusCenter = new Location("Campus Center", "A college", 42.274907, -71.808482); // done
+        // TODO: Create database and Put all locations in the data base
+
+        // WPI Facility Locations
+//        Location wpi = new Location("Worcester Polytechnic Institute", LocationType.WPIFACILITY, "sample description", 42.2746, -71.8063);
+        Location recCenter = new Location("Rec Center", LocationType.WPIFACILITY, "sample description", 42.274205, -71.810708);
+        Location fullerLabs = new Location("Fuller Labs", LocationType.WPIFACILITY, "sample description", 42.275060, -71.806522);
+        Location library = new Location("Gordon Library", LocationType.WPIFACILITY, "sample description", 42.274229, -71.806352);
+        Location campusCenter = new Location("Campus Center", LocationType.WPIFACILITY, "sample description", 42.274907, -71.808482);
+        Location gateway = new Location("Gateway Park", LocationType.WPIFACILITY, "sample description", 42.275387, -71.799020);
+
+        // Food Locations
+        Location beanCounter = new Location("The Bean Counter", LocationType.FOOD, "sample description", 42.271729, -71.807335);
+        Location boynton = new Location("The Boynton Restaurant", LocationType.FOOD, "sample description", 42.270867, -71.807431);
+        Location wooberry = new Location("Wooberry Frozen Yogurt & Ice Cream", LocationType.FOOD, "sample description", 42.270724, -71.808211);
+        Location theFix = new Location("The Fix", LocationType.FOOD, "sample description", 42.276723, -71.801415);
+
+        // Culture Locations
+        Location moorePond = new Location("Moore Pond", LocationType.CULTURE, "sample description", 42.313249, -71.957684);
+        Location wam = new Location("Worcester Art Museum", LocationType.CULTURE, "sample description", 42.273345, -71.801973);
+        Location newtonHill = new Location("Newton Hill", LocationType.CULTURE, "Great place to hike, play disc golf, and exercise", 42.267565, -71.819960);
 
         // TODO: remove the next line in production code
         campusCenter.setHasVisited(true);
 
-        allLocations.add(wpi);
         allLocations.add(recCenter);
         allLocations.add(beanCounter);
         allLocations.add(fullerLabs);
@@ -85,6 +96,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         allLocations.add(moorePond);
         allLocations.add(library);
         allLocations.add(campusCenter);
+        allLocations.add(wooberry);
+        allLocations.add(boynton);
+        allLocations.add(theFix);
+        allLocations.add(gateway);
+        allLocations.add(newtonHill);
     }
 
     // Populate map with markers in allLocations
@@ -92,16 +108,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         float markerColor;
 
         for (Location loc: allLocations) {
-            if (loc.hasVisited()) {
-                markerColor = BitmapDescriptorFactory.HUE_CYAN;
-            } else {
-                markerColor = BitmapDescriptorFactory.HUE_RED;
-            }
+
+            markerColor = getCorrespondingMarkerColor(loc);
 
             map.addMarker(new MarkerOptions()
                     .position(loc.getLatLng()).title(loc.getTitle())
                     .icon(BitmapDescriptorFactory
                             .defaultMarker(markerColor)));
+        }
+    }
+
+    private float getCorrespondingMarkerColor(Location loc){
+        LocationType type = loc.getLocationType();
+
+        if (loc.hasVisited()) {
+            return BitmapDescriptorFactory.HUE_CYAN;
+        }
+
+        switch (type) {
+            case WPIFACILITY:
+                return BitmapDescriptorFactory.HUE_RED;
+            case CULTURE:
+                return BitmapDescriptorFactory.HUE_ORANGE;
+            case FOOD:
+                return BitmapDescriptorFactory.HUE_GREEN;
+            default:
+                return BitmapDescriptorFactory.HUE_YELLOW;
         }
     }
 }

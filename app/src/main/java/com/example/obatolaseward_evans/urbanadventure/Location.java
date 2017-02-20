@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class Location {
     private String title;
+    private LocationType locationType;
     private String picturePath;
     private String description;
     private double longitude;
@@ -23,15 +24,20 @@ public class Location {
         hasVisited = false;
     }
 
-    public Location(String newTitle, String newDescription, double newLatitude, double newLongitude) {
-        title = newTitle;
-        description = newDescription;
-        latitude = newLatitude;
-        longitude = newLongitude;
+    public Location(String locTitle, LocationType locType, String locDescription, double locLatitude, double locLongitude) {
+        title = locTitle;
+        locationType = locType;
+        description = locDescription;
+        latitude = locLatitude;
+        longitude = locLongitude;
     }
 
     public String getTitle() {
         return title;
+    }
+
+    public LocationType getLocationType() {
+        return locationType;
     }
 
     public String getPicturePath() {
