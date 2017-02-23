@@ -19,7 +19,7 @@ import java.util.HashSet;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private ArrayList<Location> allLocations = new ArrayList<Location>();
+    private ArrayList<Location> allLocations = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * This should later be handled in a database.
      */
     public void generateLocations() {
-        // TODO: Create database and Put all locations in the data base
+        // TODO: Put all locations in the data base
 
         // WPI Facility Locations
 //        Location wpi = new Location("Worcester Polytechnic Institute", LocationType.WPIFACILITY, "sample description", 42.2746, -71.8063);

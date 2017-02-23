@@ -2,13 +2,13 @@ package com.example.obatolaseward_evans.urbanadventure;
 
 import com.google.android.gms.maps.model.LatLng;
 
-/**
- * Created by Penthoue on 2/20/2017.
- */
+import java.util.UUID;
 
 public class Location {
+
+    private UUID id;
     private String title;
-    private LocationType locationType;
+    private LocationType locationType; // 0 = WPIFACILITY, 1 = FOOD, 2 = CULTURE;
     private String picturePath;
     private String description;
     private double longitude;
@@ -16,6 +16,7 @@ public class Location {
     private boolean hasVisited;
 
     public Location() {
+        id = UUID.randomUUID();
         title = "";
         picturePath = "";
         description = "";
@@ -25,12 +26,34 @@ public class Location {
     }
 
     public Location(String locTitle, LocationType locType, String locDescription, double locLatitude, double locLongitude) {
+        id = UUID.randomUUID();
         title = locTitle;
         locationType = locType;
         description = locDescription;
         latitude = locLatitude;
         longitude = locLongitude;
     }
+
+    //constructor for db with locType = int
+    public Location(String locTitle, int locType, String locDescription, double locLatitude, double locLongitude) {
+        id = UUID.randomUUID();
+        title = locTitle;
+        description = locDescription;
+        latitude = locLatitude;
+        longitude = locLongitude;
+        if (locType == 0) { locationType = LocationType.WPIFACILITY; }
+        else if (locType == 1) { locationType = LocationType.FOOD; }
+        else { locationType = LocationType.CULTURE; }
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
 
     public String getTitle() {
         return title;
@@ -42,6 +65,10 @@ public class Location {
 
     public String getPicturePath() {
         return picturePath;
+    }
+
+    public void setPicturePath(String picturePath) {
+         this.picturePath = picturePath;
     }
 
     public String getDescription() {
