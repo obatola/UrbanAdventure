@@ -25,6 +25,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //populate database with locations
+        populateDatabase();
+
         // Grab all locations
         generateLocations();
 
@@ -56,6 +59,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         populateMap(mMap);
+
+    }
+
+    private void populateDatabase() {
+
+
 
     }
 

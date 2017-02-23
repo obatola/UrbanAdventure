@@ -23,6 +23,7 @@ public class Location {
         longitude = 0;
         latitude = 0;
         hasVisited = false;
+
     }
 
     public Location(String locTitle, LocationType locType, String locDescription, double locLatitude, double locLongitude) {
@@ -54,13 +55,32 @@ public class Location {
         this.id = id;
     }
 
-
     public String getTitle() {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getLocationTypeInt() {
+        if (locationType.equals(LocationType.WPIFACILITY)) { return 0; }
+        else if (locationType.equals(LocationType.FOOD)) { return 1; }
+        else { return 2; }
+    }
+
     public LocationType getLocationType() {
         return locationType;
+    }
+
+    public void setLocationTypeInt(int locationType) {
+        if (locationType == 0) { this.locationType = LocationType.WPIFACILITY; }
+        else if (locationType == 1) { this.locationType = LocationType.FOOD; }
+        else { this.locationType = LocationType.CULTURE; }
+    }
+
+    public void setLocationType(LocationType locationType) {
+        this.locationType = locationType;
     }
 
     public String getPicturePath() {
@@ -68,30 +88,39 @@ public class Location {
     }
 
     public void setPicturePath(String picturePath) {
-         this.picturePath = picturePath;
+        this.picturePath = picturePath;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getLongitude() {
         return longitude;
     }
 
-    public LatLng getLatLng() {
-        return new LatLng(latitude, longitude);
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
-    public boolean hasVisited() {
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public boolean isHasVisited() {
         return hasVisited;
     }
 
-    public void setHasVisited(boolean bool) {
-        hasVisited = bool;
+    public void setHasVisited(boolean hasVisited) {
+        this.hasVisited = hasVisited;
     }
+
 }
