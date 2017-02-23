@@ -2,6 +2,9 @@ package com.example.obatolaseward_evans.urbanadventure;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private ArrayList<Location> allLocations = new ArrayList<Location>();
@@ -33,6 +36,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_nav_menu, menu);
+        return true;
     }
 
     /**
@@ -56,7 +66,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         populateMap(mMap);
+    }
 
+    /// Populate map with markers in allLocations
+    public void  populateMap(GoogleMap map){
+        float markerColor;
+
+        for (Location loc: allLocations) {
+
+            markerColor = getCorrespondingMarkerColor(loc);
+
+            map.addMarker(new MarkerOptions()
+                    .position(loc.getLatLng()).title(loc.getTitle())
+                    .icon(BitmapDescriptorFactory
+                            .defaultMarker(markerColor)));
+        }
+    }
+
+    /// Get the google map marker color for the given location
+    private float getCorrespondingMarkerColor(Location loc){
+        LocationType type = loc.getLocationType();
+
+        if (loc.hasVisited()) {
+            return BitmapDescriptorFactory.HUE_CYAN;
+        }
+
+        switch (type) {
+            case WPIFACILITY:
+                return BitmapDescriptorFactory.HUE_RED;
+            case CULTURE:
+                return BitmapDescriptorFactory.HUE_ORANGE;
+            case FOOD:
+                return BitmapDescriptorFactory.HUE_GREEN;
+            default:
+                return BitmapDescriptorFactory.HUE_YELLOW;
+        }
     }
 
     /** Temporary location generator
@@ -101,39 +145,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         allLocations.add(theFix);
         allLocations.add(gateway);
         allLocations.add(newtonHill);
-    }
-
-    // Populate map with markers in allLocations
-    public void  populateMap(GoogleMap map){
-        float markerColor;
-
-        for (Location loc: allLocations) {
-
-            markerColor = getCorrespondingMarkerColor(loc);
-
-            map.addMarker(new MarkerOptions()
-                    .position(loc.getLatLng()).title(loc.getTitle())
-                    .icon(BitmapDescriptorFactory
-                            .defaultMarker(markerColor)));
-        }
-    }
-
-    private float getCorrespondingMarkerColor(Location loc){
-        LocationType type = loc.getLocationType();
-
-        if (loc.hasVisited()) {
-            return BitmapDescriptorFactory.HUE_CYAN;
-        }
-
-        switch (type) {
-            case WPIFACILITY:
-                return BitmapDescriptorFactory.HUE_RED;
-            case CULTURE:
-                return BitmapDescriptorFactory.HUE_ORANGE;
-            case FOOD:
-                return BitmapDescriptorFactory.HUE_GREEN;
-            default:
-                return BitmapDescriptorFactory.HUE_YELLOW;
-        }
     }
 }
