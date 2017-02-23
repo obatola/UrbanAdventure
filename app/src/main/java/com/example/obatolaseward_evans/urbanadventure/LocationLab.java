@@ -42,7 +42,7 @@ public class LocationLab {
         mDatabase.insert(LocationTable.NAME, null, values);
     }
 
-    public List<Location> getLocation() {
+    public List<Location> getLocations() {
         List<Location> location = new ArrayList<>();
 
         LocationCursorWrapper cursor = queryLocation(null, null);

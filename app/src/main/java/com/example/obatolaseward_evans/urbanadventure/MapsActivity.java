@@ -15,21 +15,22 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private ArrayList<Location> allLocations = new ArrayList<>();
+    private List<Location> allLocations;
+    private LocationLab locationLab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //populate database with locations
+        locationLab = LocationLab.get(this);
         populateDatabase();
-
-        // Grab all locations
-        generateLocations();
 
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -63,19 +64,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void populateDatabase() {
-
-
-
-    }
-
-    /** Temporary location generator
-     *
-     * Creates a set of locations to populate the map
-     * This should later be handled in a database.
-     */
-    public void generateLocations() {
-        // TODO: Put all locations in the data base
-
         // WPI Facility Locations
 //        Location wpi = new Location("Worcester Polytechnic Institute", LocationType.WPIFACILITY, "sample description", 42.2746, -71.8063);
         Location recCenter = new Location("Rec Center", LocationType.WPIFACILITY, "sample description", 42.274205, -71.810708);
@@ -95,21 +83,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Location wam = new Location("Worcester Art Museum", LocationType.CULTURE, "sample description", 42.273345, -71.801973);
         Location newtonHill = new Location("Newton Hill", LocationType.CULTURE, "Great place to hike, play disc golf, and exercise", 42.267565, -71.819960);
 
-        // TODO: remove the next line in production code
-        campusCenter.setHasVisited(true);
+        locationLab.addLocation(recCenter);
+        locationLab.addLocation(beanCounter);
+        locationLab.addLocation(fullerLabs);
+        locationLab.addLocation(wam);
+        locationLab.addLocation(moorePond);
+        locationLab.addLocation(library);
+        locationLab.addLocation(campusCenter);
+        locationLab.addLocation(wooberry);
+        locationLab.addLocation(boynton);
+        locationLab.addLocation(theFix);
+        locationLab.addLocation(gateway);
+        locationLab.addLocation(newtonHill);
 
-        allLocations.add(recCenter);
-        allLocations.add(beanCounter);
-        allLocations.add(fullerLabs);
-        allLocations.add(wam);
-        allLocations.add(moorePond);
-        allLocations.add(library);
-        allLocations.add(campusCenter);
-        allLocations.add(wooberry);
-        allLocations.add(boynton);
-        allLocations.add(theFix);
-        allLocations.add(gateway);
-        allLocations.add(newtonHill);
+        allLocations = locationLab.getLocations();
+
     }
 
     // Populate map with markers in allLocations
@@ -130,7 +118,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private float getCorrespondingMarkerColor(Location loc){
         LocationType type = loc.getLocationType();
 
-        if (loc.hasVisited()) {
+        if (loc.isHasVisited()) {
             return BitmapDescriptorFactory.HUE_CYAN;
         }
 

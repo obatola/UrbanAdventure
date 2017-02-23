@@ -123,4 +123,8 @@ public class Location {
         this.hasVisited = hasVisited;
     }
 
+    public LatLng getLatLng() {
+        return new LatLng(latitude, longitude);
+    }
+
 }
