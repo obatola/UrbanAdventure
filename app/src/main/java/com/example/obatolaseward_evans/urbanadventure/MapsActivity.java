@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 import static android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT;
 
@@ -164,10 +165,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             markerColor = getCorrespondingMarkerColor(loc);
 
-            map.addMarker(new MarkerOptions()
+            Marker m = map.addMarker(new MarkerOptions()
                     .position(loc.getLatLng()).title(loc.getTitle())
                     .icon(BitmapDescriptorFactory
                             .defaultMarker(markerColor)));
+
+            m.setTag(loc.getId());
         }
 
         mMap.setOnMarkerClickListener(this);
@@ -194,12 +197,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        return goToListActivity();
+        UUID locID = (UUID) marker.getTag();
+        return goToLocationDetailActivity(locID);
     }
 
     public boolean goToListActivity() {
         Intent intent = new Intent(this, LocationListActivity.class);
         intent.setFlags(FLAG_ACTIVITY_REORDER_TO_FRONT); // Reopen activity if already exists.
+        startActivity(intent);
+        return true;
+    }
+
+    public boolean goToLocationDetailActivity(UUID locationID) {
+        Intent intent = LocationPagerActivity.newIntent(this, locationID);
         startActivity(intent);
         return true;
     }

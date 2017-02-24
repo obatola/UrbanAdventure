@@ -19,6 +19,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT;
+import static com.example.obatolaseward_evans.urbanadventure.R.menu.location;
 
 public class LocationListFragment extends Fragment {
 
@@ -185,4 +186,5 @@ public class LocationListFragment extends Fragment {
         startActivity(intent);
         return true;
     }
+
 }
