@@ -8,13 +8,14 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
 
-    <CheckBox
+    <android.support.v7.widget.AppCompatCheckBox
         android:id="@+id/list_item_location_visited_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:padding="4dp"
-        android:clickable="false"/>
+        android:clickable="false"
+        android:backgroundTint="@color/colorAccent"/>
 
     <TextView
         android:id="@+id/list_item_location_title_text_view"
