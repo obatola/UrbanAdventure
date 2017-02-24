@@ -1,10 +1,15 @@
 package com.example.obatolaseward_evans.urbanadventure;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+=======
+import android.util.Log;
+>>>>>>> master
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -12,24 +17,42 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
+<<<<<<< HEAD
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+=======
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+>>>>>>> master
 
     private GoogleMap mMap;
-    private ArrayList<Location> allLocations = new ArrayList<Location>();
+    private List<Location> allLocations = new ArrayList<Location>();
+    private LocationLab locationLab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Grab all locations
-        generateLocations();
+        //populate database with locations
+        locationLab = LocationLab.get(this);
+
+        //make sure locations are populated and copied into allLocation array
+        if(locationLab.getLocations().size() < 1) {
+            populateDatabase();
+        } else {
+            //make sure not duplicating
+            allLocations.clear();
+            allLocations.addAll(locationLab.getLocations());
+        }
 
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -48,8 +71,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * This is where we can add markers or lines, add listeners or move the camera.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -57,6 +79,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        //make sure locations are populated and copied into allLocation array
+        if(locationLab.getLocations().size() < 1) {
+            populateDatabase();
+        } else {
+            //make sure not duplicating
+            allLocations.clear();
+            allLocations.addAll(locationLab.getLocations());
+        }
 
         // Add a marker in WPI and move the camera
         Location wpi = allLocations.get(0);
@@ -103,16 +134,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    /** Temporary location generator
-     *
-     * Creates a set of locations to populate the map
-     * This should later be handled in a database.
-     */
-    public void generateLocations() {
-        // TODO: Create database and Put all locations in the data base
-
+    private List<Location> populateDatabase() {
         // WPI Facility Locations
-//        Location wpi = new Location("Worcester Polytechnic Institute", LocationType.WPIFACILITY, "sample description", 42.2746, -71.8063);
+        Location wpi = new Location("Worcester Polytechnic Institute", LocationType.WPIFACILITY, "sample description", 42.2746, -71.8063);
         Location recCenter = new Location("Rec Center", LocationType.WPIFACILITY, "sample description", 42.274205, -71.810708);
         Location fullerLabs = new Location("Fuller Labs", LocationType.WPIFACILITY, "sample description", 42.275060, -71.806522);
         Location library = new Location("Gordon Library", LocationType.WPIFACILITY, "sample description", 42.274229, -71.806352);
@@ -130,20 +154,76 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Location wam = new Location("Worcester Art Museum", LocationType.CULTURE, "sample description", 42.273345, -71.801973);
         Location newtonHill = new Location("Newton Hill", LocationType.CULTURE, "Great place to hike, play disc golf, and exercise", 42.267565, -71.819960);
 
-        // TODO: remove the next line in production code
-        campusCenter.setHasVisited(true);
+        //TODO: delete later
+        newtonHill.setHasVisited(true);
+        recCenter.setHasVisited(true);
+        gateway.setHasVisited(true);
+        wooberry.setHasVisited(true);
 
-        allLocations.add(recCenter);
-        allLocations.add(beanCounter);
-        allLocations.add(fullerLabs);
-        allLocations.add(wam);
-        allLocations.add(moorePond);
-        allLocations.add(library);
-        allLocations.add(campusCenter);
-        allLocations.add(wooberry);
-        allLocations.add(boynton);
-        allLocations.add(theFix);
-        allLocations.add(gateway);
-        allLocations.add(newtonHill);
+        locationLab.addLocation(wpi);
+        locationLab.addLocation(recCenter);
+        locationLab.addLocation(beanCounter);
+        locationLab.addLocation(fullerLabs);
+        locationLab.addLocation(wam);
+        locationLab.addLocation(moorePond);
+        locationLab.addLocation(library);
+        locationLab.addLocation(campusCenter);
+        locationLab.addLocation(wooberry);
+        locationLab.addLocation(boynton);
+        locationLab.addLocation(theFix);
+        locationLab.addLocation(gateway);
+        locationLab.addLocation(newtonHill);
+
+        //make sure to not add duplicates
+        allLocations.clear();
+        allLocations.addAll(locationLab.getLocations());
+
+        return locationLab.getLocations();
     }
+<<<<<<< HEAD
+=======
+
+    // Populate map with markers in allLocations
+    public void  populateMap(GoogleMap map){
+        float markerColor;
+
+        for (Location loc: allLocations) {
+
+            markerColor = getCorrespondingMarkerColor(loc);
+
+            map.addMarker(new MarkerOptions()
+                    .position(loc.getLatLng()).title(loc.getTitle())
+                    .icon(BitmapDescriptorFactory
+                            .defaultMarker(markerColor)));
+        }
+
+        mMap.setOnMarkerClickListener(this);
+    }
+
+    private float getCorrespondingMarkerColor(Location loc){
+        LocationType type = loc.getLocationType();
+
+        if (loc.isHasVisited()) {
+            return BitmapDescriptorFactory.HUE_CYAN;
+        }
+
+        switch (type) {
+            case WPIFACILITY:
+                return BitmapDescriptorFactory.HUE_RED;
+            case CULTURE:
+                return BitmapDescriptorFactory.HUE_ORANGE;
+            case FOOD:
+                return BitmapDescriptorFactory.HUE_GREEN;
+            default:
+                return BitmapDescriptorFactory.HUE_YELLOW;
+        }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Intent intent = new Intent(this, LocationListActivity.class);
+        startActivity(intent);
+        return true;
+    }
+>>>>>>> master
 }
