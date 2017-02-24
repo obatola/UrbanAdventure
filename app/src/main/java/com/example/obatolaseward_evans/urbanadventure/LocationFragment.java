@@ -24,6 +24,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,13 +91,23 @@ public class LocationFragment extends Fragment {
         TextView title = (TextView)v.findViewById(R.id.location_fragement_title);
         TextView type = (TextView)v.findViewById(R.id.location_fragement_category);
         TextView des = (TextView)v.findViewById(R.id.location_fragement_descripton);
+        ImageView image = (ImageView)v.findViewById(R.id.location_fragment_image);
 
         title.setText(title.getText() + " " + location.getTitle());
         type.setText(type.getText() + " " + location.getLocationType().toString());
         des.setText(des.getText() + " " + location.getDescription());
 
-        return v;
+        String im = "@drawable/" + location.getPicturePath();
+        Log.e("LocationFragment", "picturePath: " + location.getPicturePath());
+        Log.e("LocationFragment", "im: " + im);
 
+        int id = getResources().getIdentifier(im, "drawable", getActivity().getPackageName());
+
+        Log.e("LocationFragment", "id: " + id);
+
+        image.setImageResource(id);
+
+        return v;
 
     }
 

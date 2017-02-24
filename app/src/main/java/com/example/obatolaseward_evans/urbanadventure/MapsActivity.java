@@ -3,7 +3,11 @@ package com.example.obatolaseward_evans.urbanadventure;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,8 +24,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+import static android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT;
+
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private List<Location> allLocations = new ArrayList<Location>();
@@ -49,6 +56,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    // Add the actionbar to the top of the view
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.mapview_actionbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.list:
+                goToListActivity();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
@@ -86,12 +113,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private List<Location> populateDatabase() {
         // WPI Facility Locations
         Location wpi = new Location("Worcester Polytechnic Institute", LocationType.WPIFACILITY, "sample description", 42.2746, -71.8063);
+        wpi.setPicturePath("wpi");
         Location recCenter = new Location("Rec Center", LocationType.WPIFACILITY, "sample description", 42.274205, -71.810708);
+        recCenter.setPicturePath("rec");
         Location fullerLabs = new Location("Fuller Labs", LocationType.WPIFACILITY, "sample description", 42.275060, -71.806522);
+        fullerLabs.setPicturePath("fuller");
         Location library = new Location("Gordon Library", LocationType.WPIFACILITY, "sample description", 42.274229, -71.806352);
+        library.setPicturePath("lib");
         Location campusCenter = new Location("Campus Center", LocationType.WPIFACILITY, "sample description", 42.274907, -71.808482);
+        campusCenter.setPicturePath("cc");
         Location gateway = new Location("Gateway Park", LocationType.WPIFACILITY, "sample description", 42.275387, -71.799020);
-
+        gateway.setPicturePath("gateway");
         // Food Locations
         Location beanCounter = new Location("The Bean Counter", LocationType.FOOD, "sample description", 42.271729, -71.807335);
 
@@ -101,15 +133,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 "administration building of WPI), and Boynton Park. You may or may not know that the frequent use of the name " +
                 "\"Boynton\" originates from John Boynton, one of the founding fathers of Worcester Polytechnic Institute. ";
         Location boynton = new Location("The Boynton Restaurant", LocationType.FOOD, boyntonDes, 42.270867, -71.807431);
-
+        beanCounter.setPicturePath("gateway");
 
         Location wooberry = new Location("Wooberry Frozen Yogurt & Ice Cream", LocationType.FOOD, "sample description", 42.270724, -71.808211);
+        wooberry.setPicturePath("gateway");
         Location theFix = new Location("The Fix", LocationType.FOOD, "sample description", 42.276723, -71.801415);
+        theFix.setPicturePath("gateway");
 
         // Culture Locations
         Location moorePond = new Location("Moore Pond", LocationType.CULTURE, "sample description", 42.313249, -71.957684);
+        moorePond.setPicturePath("gateway");
         Location wam = new Location("Worcester Art Museum", LocationType.CULTURE, "sample description", 42.273345, -71.801973);
+        wam.setPicturePath("gateway");
         Location newtonHill = new Location("Newton Hill", LocationType.CULTURE, "Great place to hike, play disc golf, and exercise", 42.267565, -71.819960);
+        newtonHill.setPicturePath("gateway");
 
         //TODO: delete later
         newtonHill.setHasVisited(true);
@@ -146,10 +183,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             markerColor = getCorrespondingMarkerColor(loc);
 
-            map.addMarker(new MarkerOptions()
+            Marker m = map.addMarker(new MarkerOptions()
                     .position(loc.getLatLng()).title(loc.getTitle())
                     .icon(BitmapDescriptorFactory
                             .defaultMarker(markerColor)));
+
+            m.setTag(loc.getId());
         }
 
         mMap.setOnMarkerClickListener(this);
@@ -176,7 +215,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        UUID locID = (UUID) marker.getTag();
+        return goToLocationDetailActivity(locID);
+    }
+
+    public boolean goToListActivity() {
         Intent intent = new Intent(this, LocationListActivity.class);
+        intent.setFlags(FLAG_ACTIVITY_REORDER_TO_FRONT); // Reopen activity if already exists.
+        startActivity(intent);
+        return true;
+    }
+
+    public boolean goToLocationDetailActivity(UUID locationID) {
+        Intent intent = LocationPagerActivity.newIntent(this, locationID);
         startActivity(intent);
         return true;
     }
