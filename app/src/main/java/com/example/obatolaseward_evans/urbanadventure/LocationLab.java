@@ -16,8 +16,8 @@ import java.util.UUID;
 public class LocationLab {
     private static LocationLab locationLab;
 
-    private Context mContext;
-    private SQLiteDatabase mDatabase;
+    private Context context;
+    private SQLiteDatabase database;
 
     public static LocationLab get(Context context) {
         if (locationLab == null) {
@@ -27,8 +27,8 @@ public class LocationLab {
     }
 
     private LocationLab(Context context) {
-        mContext = context.getApplicationContext();
-        mDatabase = new LocationBaseHelper(mContext)
+        this.context = context.getApplicationContext();
+        database = new LocationBaseHelper(this.context)
                 .getWritableDatabase();
     }
 
@@ -36,7 +36,7 @@ public class LocationLab {
     public void addLocation(Location c) {
         ContentValues values = getContentValues(c);
 
-        mDatabase.insert(LocationTable.NAME, null, values);
+        database.insert(LocationTable.NAME, null, values);
     }
 
     public List<Location> getLocations() {
@@ -76,7 +76,7 @@ public class LocationLab {
         String uuidString = location.getId().toString();
         ContentValues values = getContentValues(location);
 
-        mDatabase.update(LocationTable.NAME, values,
+        database.update(LocationTable.NAME, values,
                 LocationTable.Cols.UUID + " = ?",
                 new String[] { uuidString });
     }
@@ -96,7 +96,7 @@ public class LocationLab {
     }
 
     private LocationCursorWrapper queryLocation(String whereClause, String[] whereArgs) {
-        Cursor cursor = mDatabase.query(
+        Cursor cursor = database.query(
                 LocationTable.NAME,
                 null, // Columns - null selects all columns
                 whereClause,
@@ -108,5 +108,11 @@ public class LocationLab {
         );
 
         return new LocationCursorWrapper(cursor);
+    }
+
+    void deleteAll()
+    {
+        database.delete(LocationTable.NAME, null, null);
+
     }
 }

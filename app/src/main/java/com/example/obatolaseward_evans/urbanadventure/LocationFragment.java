@@ -53,10 +53,6 @@ public class LocationFragment extends Fragment {
 
     private static final String ARG_LOCATION_ID = "location_id";
 
-    private static final int REQUEST_DATE = 0;
-    private static final int REQUEST_CONTACT = 1;
-    private static final int REQUEST_PHOTO= 2;
-
     private Location location;
 
 

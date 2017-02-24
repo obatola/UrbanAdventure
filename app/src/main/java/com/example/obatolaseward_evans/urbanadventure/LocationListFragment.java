@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -70,8 +71,15 @@ public class LocationListFragment extends Fragment {
 
     private void updateLocationNum() {
         LocationLab locationLab = LocationLab.get(getActivity());
-        //TODO: change to check for each location visited
-        String locationCount = "" + locationLab.getLocations().size();
+        int count = 0;
+        List<Location> loc = locationLab.getLocations();
+        for(int i = 0; i < loc.size(); i++){
+            if(!loc.get(i).isHasVisited()) {
+                count++;
+            }
+        }
+
+        String locationCount = "" + count;
         String subtitle = getString(R.string.num_locations, locationCount);
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();

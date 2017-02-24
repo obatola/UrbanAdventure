@@ -3,6 +3,7 @@ package com.example.obatolaseward_evans.urbanadventure;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,7 +24,7 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
-    private List<Location> allLocations;
+    private List<Location> allLocations = new ArrayList<Location>();
     private LocationLab locationLab;
 
 
@@ -34,12 +35,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //populate database with locations
         locationLab = LocationLab.get(this);
 
-        try {
-            if (allLocations.isEmpty()) {
-                populateDatabase();
-            }
-        } catch (Exception e) {
+        //make sure locations are populated and copied into allLocation array
+        if(locationLab.getLocations().size() < 1) {
             populateDatabase();
+        } else {
+            //make sure not duplicating
+            allLocations.clear();
+            allLocations.addAll(locationLab.getLocations());
         }
 
         setContentView(R.layout.activity_maps);
@@ -52,8 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * This is where we can add markers or lines, add listeners or move the camera.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -62,12 +63,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        try {
-            if (allLocations.isEmpty()) {
-                populateDatabase();
-            }
-        } catch (Exception e) {
+        //make sure locations are populated and copied into allLocation array
+        if(locationLab.getLocations().size() < 1) {
             populateDatabase();
+        } else {
+            //make sure not duplicating
+            allLocations.clear();
+            allLocations.addAll(locationLab.getLocations());
         }
 
         // Add a marker in WPI and move the camera
@@ -81,9 +83,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    private void populateDatabase() {
+    private List<Location> populateDatabase() {
         // WPI Facility Locations
-//        Location wpi = new Location("Worcester Polytechnic Institute", LocationType.WPIFACILITY, "sample description", 42.2746, -71.8063);
+        Location wpi = new Location("Worcester Polytechnic Institute", LocationType.WPIFACILITY, "sample description", 42.2746, -71.8063);
         Location recCenter = new Location("Rec Center", LocationType.WPIFACILITY, "sample description", 42.274205, -71.810708);
         Location fullerLabs = new Location("Fuller Labs", LocationType.WPIFACILITY, "sample description", 42.275060, -71.806522);
         Location library = new Location("Gordon Library", LocationType.WPIFACILITY, "sample description", 42.274229, -71.806352);
@@ -101,6 +103,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Location wam = new Location("Worcester Art Museum", LocationType.CULTURE, "sample description", 42.273345, -71.801973);
         Location newtonHill = new Location("Newton Hill", LocationType.CULTURE, "Great place to hike, play disc golf, and exercise", 42.267565, -71.819960);
 
+        //TODO: delete later
+        newtonHill.setHasVisited(true);
+        recCenter.setHasVisited(true);
+        gateway.setHasVisited(true);
+        wooberry.setHasVisited(true);
+
+        locationLab.addLocation(wpi);
         locationLab.addLocation(recCenter);
         locationLab.addLocation(beanCounter);
         locationLab.addLocation(fullerLabs);
@@ -114,8 +123,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationLab.addLocation(gateway);
         locationLab.addLocation(newtonHill);
 
-        allLocations = locationLab.getLocations();
+        //make sure to not add duplicates
+        allLocations.clear();
+        allLocations.addAll(locationLab.getLocations());
 
+        return locationLab.getLocations();
     }
 
     // Populate map with markers in allLocations
