@@ -113,22 +113,34 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private List<Location> populateDatabase() {
         // WPI Facility Locations
         Location wpi = new Location("Worcester Polytechnic Institute", LocationType.WPIFACILITY, "sample description", 42.2746, -71.8063);
+        wpi.setPicturePath("wpi");
         Location recCenter = new Location("Rec Center", LocationType.WPIFACILITY, "sample description", 42.274205, -71.810708);
+        recCenter.setPicturePath("rec");
         Location fullerLabs = new Location("Fuller Labs", LocationType.WPIFACILITY, "sample description", 42.275060, -71.806522);
+        fullerLabs.setPicturePath("fuller");
         Location library = new Location("Gordon Library", LocationType.WPIFACILITY, "sample description", 42.274229, -71.806352);
+        library.setPicturePath("lib");
         Location campusCenter = new Location("Campus Center", LocationType.WPIFACILITY, "sample description", 42.274907, -71.808482);
+        campusCenter.setPicturePath("cc");
         Location gateway = new Location("Gateway Park", LocationType.WPIFACILITY, "sample description", 42.275387, -71.799020);
-
+        gateway.setPicturePath("gateway");
         // Food Locations
         Location beanCounter = new Location("The Bean Counter", LocationType.FOOD, "sample description", 42.271729, -71.807335);
+        beanCounter.setPicturePath("gateway");
         Location boynton = new Location("The Boynton Restaurant", LocationType.FOOD, "sample description", 42.270867, -71.807431);
+        boynton.setPicturePath("gateway");
         Location wooberry = new Location("Wooberry Frozen Yogurt & Ice Cream", LocationType.FOOD, "sample description", 42.270724, -71.808211);
+        wooberry.setPicturePath("gateway");
         Location theFix = new Location("The Fix", LocationType.FOOD, "sample description", 42.276723, -71.801415);
+        theFix.setPicturePath("gateway");
 
         // Culture Locations
         Location moorePond = new Location("Moore Pond", LocationType.CULTURE, "sample description", 42.313249, -71.957684);
+        moorePond.setPicturePath("gateway");
         Location wam = new Location("Worcester Art Museum", LocationType.CULTURE, "sample description", 42.273345, -71.801973);
+        wam.setPicturePath("gateway");
         Location newtonHill = new Location("Newton Hill", LocationType.CULTURE, "Great place to hike, play disc golf, and exercise", 42.267565, -71.819960);
+        newtonHill.setPicturePath("gateway");
 
         //TODO: delete later
         newtonHill.setHasVisited(true);
