@@ -3,7 +3,11 @@ package com.example.obatolaseward_evans.urbanadventure;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,8 +24,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+import static android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT;
+
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private List<Location> allLocations = new ArrayList<Location>();
@@ -49,6 +56,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    // Add the actionbar to the top of the view
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.mapview_actionbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.list:
+                goToListActivity();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
@@ -138,10 +165,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             markerColor = getCorrespondingMarkerColor(loc);
 
-            map.addMarker(new MarkerOptions()
+            Marker m = map.addMarker(new MarkerOptions()
                     .position(loc.getLatLng()).title(loc.getTitle())
                     .icon(BitmapDescriptorFactory
                             .defaultMarker(markerColor)));
+
+            m.setTag(loc.getId());
         }
 
         mMap.setOnMarkerClickListener(this);
@@ -168,7 +197,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        UUID locID = (UUID) marker.getTag();
+        return goToLocationDetailActivity(locID);
+    }
+
+    public boolean goToListActivity() {
         Intent intent = new Intent(this, LocationListActivity.class);
+        intent.setFlags(FLAG_ACTIVITY_REORDER_TO_FRONT); // Reopen activity if already exists.
+        startActivity(intent);
+        return true;
+    }
+
+    public boolean goToLocationDetailActivity(UUID locationID) {
+        Intent intent = LocationPagerActivity.newIntent(this, locationID);
         startActivity(intent);
         return true;
     }

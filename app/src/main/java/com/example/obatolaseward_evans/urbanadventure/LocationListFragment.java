@@ -22,6 +22,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import static android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT;
+import static com.example.obatolaseward_evans.urbanadventure.R.menu.location;
+
 public class LocationListFragment extends Fragment {
 
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
@@ -71,6 +74,19 @@ public class LocationListFragment extends Fragment {
         inflater.inflate(R.menu.fragment_location_list, menu);
 
         updateLocationNum();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.map:
+                goToMapActivity();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void updateLocationNum() {
@@ -170,4 +186,12 @@ public class LocationListFragment extends Fragment {
             this.locations = locations;
         }
     }
+
+    public boolean goToMapActivity() {
+        Intent intent = new Intent(getActivity(), MapsActivity.class);
+        intent.setFlags(FLAG_ACTIVITY_REORDER_TO_FRONT); // Reopen activity if already exists.
+        startActivity(intent);
+        return true;
+    }
+
 }
