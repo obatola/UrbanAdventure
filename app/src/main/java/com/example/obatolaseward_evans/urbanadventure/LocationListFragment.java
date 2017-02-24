@@ -70,7 +70,7 @@ public class LocationListFragment extends Fragment {
 
     private void updateLocationNum() {
         LocationLab locationLab = LocationLab.get(getActivity());
-        //TODO: change to check for each location visited 
+        //TODO: change to check for each location visited
         String locationCount = "" + locationLab.getLocations().size();
         String subtitle = getString(R.string.num_locations, locationCount);
 

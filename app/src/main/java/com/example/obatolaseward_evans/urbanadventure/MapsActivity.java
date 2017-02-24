@@ -13,6 +13,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +34,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //populate database with locations
         locationLab = LocationLab.get(this);
 
-        if (locationLab.checkIfEmpty()) { populateDatabase(); }
+        try {
+            if (allLocations.isEmpty()) {
+                populateDatabase();
+            }
+        } catch (Exception e) {
+            populateDatabase();
+        }
 
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -54,6 +61,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        try {
+            if (allLocations.isEmpty()) {
+                populateDatabase();
+            }
+        } catch (Exception e) {
+            populateDatabase();
+        }
 
         // Add a marker in WPI and move the camera
         Location wpi = allLocations.get(0);

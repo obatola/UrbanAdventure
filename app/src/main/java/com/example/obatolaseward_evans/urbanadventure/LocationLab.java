@@ -109,17 +109,4 @@ public class LocationLab {
 
         return new LocationCursorWrapper(cursor);
     }
-
-    public boolean checkIfEmpty() {
-        Cursor mCursor = mDatabase.rawQuery("select * from " + LocationTable.NAME, null);
-        Boolean check;
-
-        if (mCursor.moveToFirst()) {
-            check = false;
-
-        } else {
-            check = true;
-        }
-        return check;
-    }
 }
