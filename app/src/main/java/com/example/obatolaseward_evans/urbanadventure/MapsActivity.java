@@ -127,10 +127,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Food Locations
         Location beanCounter = new Location("The Bean Counter", LocationType.FOOD, "sample description", 42.271729, -71.807335);
 <<<<<<< HEAD
+<<<<<<< HEAD
         beanCounter.setPicturePath("gateway");
         Location boynton = new Location("The Boynton Restaurant", LocationType.FOOD, "sample description", 42.270867, -71.807431);
         boynton.setPicturePath("gateway");
 =======
+=======
+>>>>>>> 1b884af00caf92ee64e8c7c8d670d0a72f89c40f
 
         String boyntonDes = "The Boynton was originally a small tavern in the 1930's most often frequented by Worcester Polytechnic Institute (WPI) professors, " +
                 "students and the general neighborhood population. (Not too much different from today!) The name \"Boynton\" seems " +
@@ -138,9 +141,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 "administration building of WPI), and Boynton Park. You may or may not know that the frequent use of the name " +
                 "\"Boynton\" originates from John Boynton, one of the founding fathers of Worcester Polytechnic Institute. ";
         Location boynton = new Location("The Boynton Restaurant", LocationType.FOOD, boyntonDes, 42.270867, -71.807431);
+        beanCounter.setPicturePath("gateway");
 
+<<<<<<< HEAD
 
 >>>>>>> list_work
+=======
+>>>>>>> 1b884af00caf92ee64e8c7c8d670d0a72f89c40f
         Location wooberry = new Location("Wooberry Frozen Yogurt & Ice Cream", LocationType.FOOD, "sample description", 42.270724, -71.808211);
         wooberry.setPicturePath("gateway");
         Location theFix = new Location("The Fix", LocationType.FOOD, "sample description", 42.276723, -71.801415);
