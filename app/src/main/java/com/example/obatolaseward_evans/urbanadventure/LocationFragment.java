@@ -21,6 +21,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
@@ -95,15 +96,13 @@ public class LocationFragment extends Fragment {
 
         title.setText(title.getText() + " " + location.getTitle());
         type.setText(type.getText() + " " + location.getLocationType().toString());
-        des.setText(des.getText() + " " + location.getDescription());
+
+        String description = "<b>Description: </b> " + location.getDescription();
+        des.setText(Html.fromHtml(description));
 
         String im = "@drawable/" + location.getPicturePath();
-        Log.e("LocationFragment", "picturePath: " + location.getPicturePath());
-        Log.e("LocationFragment", "im: " + im);
 
         int id = getResources().getIdentifier(im, "drawable", getActivity().getPackageName());
-
-        Log.e("LocationFragment", "id: " + id);
 
         image.setImageResource(id);
 
