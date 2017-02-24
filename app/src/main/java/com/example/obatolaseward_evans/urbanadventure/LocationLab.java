@@ -9,9 +9,6 @@ import com.example.obatolaseward_evans.urbanadventure.database.LocationDbSchema.
 import com.example.obatolaseward_evans.urbanadventure.database.LocationBaseHelper;
 import com.example.obatolaseward_evans.urbanadventure.database.LocationCursorWrapper;
 
-
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -111,5 +108,18 @@ public class LocationLab {
         );
 
         return new LocationCursorWrapper(cursor);
+    }
+
+    public boolean checkIfEmpty() {
+        Cursor mCursor = mDatabase.rawQuery("select * from " + LocationTable.NAME, null);
+        Boolean check;
+
+        if (mCursor.moveToFirst()) {
+            check = false;
+
+        } else {
+            check = true;
+        }
+        return check;
     }
 }

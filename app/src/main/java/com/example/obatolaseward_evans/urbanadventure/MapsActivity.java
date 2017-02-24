@@ -1,5 +1,6 @@
 package com.example.obatolaseward_evans.urbanadventure;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -9,6 +10,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.lang.reflect.Array;
@@ -17,7 +19,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private List<Location> allLocations;
@@ -30,7 +32,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //populate database with locations
         locationLab = LocationLab.get(this);
-        populateDatabase();
+
+        if (locationLab.checkIfEmpty()) { populateDatabase(); }
 
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -113,6 +116,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .icon(BitmapDescriptorFactory
                             .defaultMarker(markerColor)));
         }
+
+        mMap.setOnMarkerClickListener(this);
     }
 
     private float getCorrespondingMarkerColor(Location loc){
@@ -132,5 +137,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             default:
                 return BitmapDescriptorFactory.HUE_YELLOW;
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Intent intent = new Intent(this, LocationListActivity.class);
+        startActivity(intent);
+        return true;
     }
 }
