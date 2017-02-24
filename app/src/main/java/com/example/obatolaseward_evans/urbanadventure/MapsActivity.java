@@ -156,6 +156,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         gateway.setPicturePath("gateway");
 
         // Food Locations
+
         String bean = "At the Bean Counter Bakery, all of the fine cakes, cupcakes, cookies, tarts, pies, desserts, pastries" +
                 " and baked goods are hand made from scratch. Only premium quality fresh all natural ingredients " +
                 "and no preservatives or artificial flavors are used. All of the coffee and espresso beans are micro-roasted " +
