@@ -145,7 +145,9 @@ public class LocationListFragment extends Fragment {
             locationTypeTextView.setText(location.getLocationType().toString());
             visitedCheckBox.setChecked(location.isHasVisited());
             if(location.isHasVisited()){
-                itemView.setBackgroundColor(Color.parseColor("#F5E6E6"));
+                itemView.setBackgroundColor(Color.parseColor("#ecf0f1"));
+                titleTextView.setTextColor(Color.parseColor("#bdc3c7"));
+                locationTypeTextView.setTextColor(Color.parseColor("#bdc3c7"));
             }
         }
 
