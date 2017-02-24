@@ -156,21 +156,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         gateway.setPicturePath("gateway");
 
         // Food Locations
-<<<<<<< HEAD
-<<<<<<< HEAD
-        Location beanCounter = new Location("The Bean Counter", LocationType.FOOD, "sample description", 42.271729, -71.807335);
-<<<<<<< HEAD
-<<<<<<< HEAD
-        beanCounter.setPicturePath("gateway");
-        Location boynton = new Location("The Boynton Restaurant", LocationType.FOOD, "sample description", 42.270867, -71.807431);
-        boynton.setPicturePath("gateway");
-=======
-=======
->>>>>>> 1b884af00caf92ee64e8c7c8d670d0a72f89c40f
-=======
-=======
-
->>>>>>> 61372ca130adf63db88b179374b9098f254ede80
         String bean = "At the Bean Counter Bakery, all of the fine cakes, cupcakes, cookies, tarts, pies, desserts, pastries" +
                 " and baked goods are hand made from scratch. Only premium quality fresh all natural ingredients " +
                 "and no preservatives or artificial flavors are used. All of the coffee and espresso beans are micro-roasted " +
@@ -179,10 +164,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 "expectations. All beans are bought Direct-Trade single origin.";
         Location beanCounter = new Location("The Bean Counter", LocationType.FOOD, bean, 42.271729, -71.807335);
         beanCounter.setPicturePath("bean");
-<<<<<<< HEAD
->>>>>>> list_work
-=======
->>>>>>> 61372ca130adf63db88b179374b9098f254ede80
 
         String boyntonDes = "The Boynton was originally a small tavern in the 1930's most often frequented by Worcester Polytechnic Institute (WPI) professors, " +
                 "students and the general neighborhood population. (Not too much different from today!) The name \"Boynton\" seems " +
@@ -200,27 +181,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Location wooberry = new Location("Wooberry Frozen Yogurt & Ice Cream", LocationType.FOOD, woo, 42.270724, -71.808211);
         wooberry.setPicturePath("wooberry");
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-
->>>>>>> list_work
-=======
->>>>>>> 1b884af00caf92ee64e8c7c8d670d0a72f89c40f
-        Location wooberry = new Location("Wooberry Frozen Yogurt & Ice Cream", LocationType.FOOD, "sample description", 42.270724, -71.808211);
-        wooberry.setPicturePath("gateway");
-        Location theFix = new Location("The Fix", LocationType.FOOD, "sample description", 42.276723, -71.801415);
-        theFix.setPicturePath("gateway");
-=======
         String fix = "Modern setting for custom burgers served with craft beers, unique cocktails & spiked milkshakes.";
         Location theFix = new Location("The Fix", LocationType.FOOD, fix, 42.276723, -71.801415);
         theFix.setPicturePath("fix");
->>>>>>> list_work
-=======
-        String fix = "Modern setting for custom burgers served with craft beers, unique cocktails & spiked milkshakes.";
-        Location theFix = new Location("The Fix", LocationType.FOOD, fix, 42.276723, -71.801415);
-        theFix.setPicturePath("fix");
->>>>>>> 61372ca130adf63db88b179374b9098f254ede80
 
         // Culture Locations
         String moore = "Moore State Park is a 737-acre public recreation area located in the town of Paxton, Massachusetts, portions of " +
