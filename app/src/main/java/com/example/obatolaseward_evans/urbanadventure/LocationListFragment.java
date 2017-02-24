@@ -1,9 +1,13 @@
 package com.example.obatolaseward_evans.urbanadventure;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -106,7 +110,7 @@ public class LocationListFragment extends Fragment {
 
         private TextView titleTextView;
         private TextView locationTypeTextView;
-        private CheckBox visitedCheckBox;
+        private AppCompatCheckBox visitedCheckBox;
 
         private Location location;
 
@@ -116,7 +120,7 @@ public class LocationListFragment extends Fragment {
 
             titleTextView = (TextView) itemView.findViewById(R.id.list_item_location_title_text_view);
             locationTypeTextView = (TextView) itemView.findViewById(R.id.list_item_location_type_text_view);
-            visitedCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_location_visited_check_box);
+            visitedCheckBox = (AppCompatCheckBox) itemView.findViewById(R.id.list_item_location_visited_check_box);
         }
 
         public void bindLocation(Location bLocation) {
@@ -124,6 +128,9 @@ public class LocationListFragment extends Fragment {
             titleTextView.setText(location.getTitle());
             locationTypeTextView.setText(location.getLocationType().toString());
             visitedCheckBox.setChecked(location.isHasVisited());
+            if(location.isHasVisited()){
+                itemView.setBackgroundColor(Color.parseColor("#F5E6E6"));
+            }
         }
 
         @Override
