@@ -42,6 +42,8 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
 
+import org.w3c.dom.Text;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -84,7 +86,18 @@ public class LocationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_location, container, false);
+
+        TextView title = (TextView)v.findViewById(R.id.location_fragement_title);
+        TextView type = (TextView)v.findViewById(R.id.location_fragement_category);
+        TextView des = (TextView)v.findViewById(R.id.location_fragement_descripton);
+
+        title.setText(title.getText() + " " + location.getTitle());
+        type.setText(type.getText() + " " + location.getLocationType().toString());
+        des.setText(des.getText() + " " + location.getDescription());
+
         return v;
+
+
     }
 
     @Override
