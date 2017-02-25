@@ -13,6 +13,8 @@ public class LocationDbSchema {
             public static final String LONGITUDE = "longitude";
             public static final String LATITUDE = "latitude";
             public static final String HASVISITED = "hasVisited";
+            public static final String WEBSITEURL = "websiteURL";
+            public static final String PHONENUMBER = "phoneNumber";
         }
     }
 }

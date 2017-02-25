@@ -15,7 +15,7 @@ public class Location {
     private double latitude;
     private boolean hasVisited;
     private String phoneNumber;
-    private String website;
+    private String websiteURL;
 
     public Location() {
         id = UUID.randomUUID();
@@ -26,7 +26,7 @@ public class Location {
         latitude = 0;
         hasVisited = false;
         phoneNumber = "";
-        website = "";
+        websiteURL = "";
 
     }
 
@@ -139,11 +139,11 @@ public class Location {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getWebsite() {
-        return website;
+    public String getWebsiteURL() {
+        return websiteURL;
     }
 
-    public void setWebsite(String website) {
-        this.website = website;
+    public void setWebsiteURL(String websiteURL) {
+        this.websiteURL = websiteURL;
     }
 }

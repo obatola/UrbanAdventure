@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,10 @@ public class LocationFragment extends Fragment {
     private static final String ARG_LOCATION_ID = "location_id";
 
     private Location location;
+    private Button directionButton;
+    private Button phoneButton;
+    private Button websiteButton;
+
 
 
     public static LocationFragment newInstance(UUID locationId) {
@@ -52,14 +57,11 @@ public class LocationFragment extends Fragment {
         TextView type = (TextView)v.findViewById(R.id.location_fragement_category);
         TextView des = (TextView)v.findViewById(R.id.location_fragement_descripton);
         ImageView image = (ImageView)v.findViewById(R.id.location_fragment_image);
-        Button directionButton = (Button) v.findViewById(R.id.location_fragment_directions_button);
+        directionButton = (Button) v.findViewById(R.id.location_fragment_directions_button);
+        phoneButton = (Button) v.findViewById(R.id.location_fragment_phone_button);
+        websiteButton = (Button) v.findViewById(R.id.location_fragment_website_button);
 
-        directionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getGoogleMapDirections();
-            }
-        });
+        initializeButtons();
 
         title.setText(location.getTitle());
         type.setText(location.getLocationType().toString());
@@ -76,11 +78,77 @@ public class LocationFragment extends Fragment {
         return v;
     }
 
-    private void getGoogleMapDirections() {
+    private void initializeButtons() {
+        if (location.getPhoneNumber() == null) {
+            Log.d("locationdetailview", "phone number: " + location.getPhoneNumber());
+            phoneButton.setVisibility(View.GONE);
+        } else {
+            phoneButton.setVisibility(View.VISIBLE);
+            phoneButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callPhoneNumber(location.getPhoneNumber());
+                }
+            });
+        }
+
+        if (location.getWebsiteURL() == null) {
+            websiteButton.setVisibility(View.GONE);
+        } else {
+            websiteButton.setVisibility(View.VISIBLE);
+            websiteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openWebsite(location.getWebsiteURL());
+                }
+            });
+        }
+//
+//        phoneButton.setVisibility(View.VISIBLE);
+//        phoneButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d(null, location.getPhoneNumber());
+//                callPhoneNumber(location.getPhoneNumber());
+//            }
+//        });
+//
+//        websiteButton.setVisibility(View.VISIBLE);
+//        websiteButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d(null, location.getWebsiteURL());
+//                openWebsite(location.getWebsiteURL());
+//            }
+//        });
+
+        directionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getGoogleMapDirections(location.getLatitude(), location.getLongitude());
+            }
+        });
+    }
+
+    private void getGoogleMapDirections(double latitude, double longitude) {
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                Uri.parse("http://maps.google.com/maps?daddr="+ location.getLatitude() +"," + location.getLongitude()));
+                Uri.parse("http://maps.google.com/maps?daddr="+ latitude +"," + longitude));
         startActivity(intent);
     }
+
+    private void callPhoneNumber(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        startActivity(intent);
+    }
+
+    private void openWebsite(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
+    }
+
+
 
     @Override
     public void onDestroy() {
