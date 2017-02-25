@@ -93,11 +93,19 @@ public class LocationFragment extends Fragment {
         TextView type = (TextView)v.findViewById(R.id.location_fragement_category);
         TextView des = (TextView)v.findViewById(R.id.location_fragement_descripton);
         ImageView image = (ImageView)v.findViewById(R.id.location_fragment_image);
+        Button directionButton = (Button) v.findViewById(R.id.location_fragment_directions_button);
 
-        title.setText(title.getText() + " " + location.getTitle());
-        type.setText(type.getText() + " " + location.getLocationType().toString());
+        directionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getGoogleMapDirections();
+            }
+        });
 
-        String description = "<b>Description: </b> " + location.getDescription();
+        title.setText(location.getTitle());
+        type.setText(location.getLocationType().toString());
+
+        String description = location.getDescription();
         des.setText(Html.fromHtml(description));
 
         String im = "@drawable/" + location.getPicturePath();
@@ -107,7 +115,12 @@ public class LocationFragment extends Fragment {
         image.setImageResource(id);
 
         return v;
+    }
 
+    private void getGoogleMapDirections() {
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?daddr="+ location.getLatitude() +"," + location.getLongitude()));
+        startActivity(intent);
     }
 
     @Override

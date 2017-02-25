@@ -16,8 +16,9 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
-                android:id="@+id/location_fragment_image"/>
+                android:layout_height="147dp"
+                android:id="@+id/location_fragment_image"
+                android:background="?android:attr/scrollbarThumbVertical" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,14 +30,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/location"
-                android:textSize="24sp"
-                android:textStyle="normal|bold"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/location_fragement_title"
-                android:textSize="24sp"/>
+                android:textSize="24sp"
+                android:text="Location Title" />
         </LinearLayout>
 
         <LinearLayout
@@ -45,33 +41,70 @@
             android:orientation="horizontal"
             android:paddingStart="6dp"
             android:paddingLeft="6dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/category"
-                android:textSize="24sp"
-                android:textStyle="normal|bold"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/location_fragement_category"
-                android:textSize="24sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingStart="6dp"
-            android:paddingLeft="6dp">
+                android:textSize="18sp"
+                android:text="Category" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/textView"
+                android:textSize="18sp"
+                android:text=" - " />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView2"
+                android:textSize="18sp"
+                android:text="0.0 mi"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingStart="6dp"
+                android:paddingLeft="6dp">
+
+                <Button
+                    android:text="Phone"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/location_fragment_phone_button"
+                    android:layout_width="wrap_content" />
+
+                <Button
+                    android:text="Directions"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/location_fragment_directions_button"
+                    android:layout_width="wrap_content" />
+
+                <Button
+                    android:text="Website"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/location_fragment_website_button"
+                    android:layout_width="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="6dp"
+            android:paddingLeft="6dp"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="252dp"
                 android:id="@+id/location_fragement_descripton"
-                android:textSize="24sp"/>
+                android:textSize="18sp"
+                android:text="description goes here" />
         </LinearLayout>
 
         </LinearLayout>
