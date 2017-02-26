@@ -49,6 +49,7 @@ public class Brain {
 
     public double getDistanceBetweenTwo(double lat1, double lng1, double lat2, double lng2) {
         int r = 6371; // average radius of the earth in km
+
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lng2 - lng1);
         double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -56,6 +57,10 @@ public class Brain {
                         * Math.sin(dLon / 2) * Math.sin(dLon / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double d = r * c;
+
+        // convert d from km to mi
+        d = d * 0.621371;
+
         return d;
     }
 
