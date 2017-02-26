@@ -44,6 +44,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private List<Location> allLocations = new ArrayList<Location>();
     private LocationLab locationLab;
+    private Brain brain = Brain.getInstance();
 
     // For current location
     GoogleApiClient mGoogleApiClient;
@@ -395,6 +396,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onLocationChanged(android.location.Location location) {
         mLastLocation = location;
+        brain.setCurrentLocation(mLastLocation);
+
         if (mLocationMarker != null) {
             mLocationMarker.remove();
         }
