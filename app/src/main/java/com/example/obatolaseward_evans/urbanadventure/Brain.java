@@ -60,6 +60,7 @@ public class Brain {
 
         // convert d from km to mi
         d = d * 0.621371;
+        d = Math.round(d * 10) / 10.0;
 
         return d;
     }

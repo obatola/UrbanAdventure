@@ -155,11 +155,13 @@ public class LocationListFragment extends Fragment {
             locationTypeTextView.setText(location.getLocationType().toString());
             visitedCheckBox.setChecked(location.isHasVisited());
 
-            double distance = brain.getDistanceBetweenTwo(location.getLatitude(),location.getLongitude(),
-                    brain.getCurrentLocation().getLatitude(),brain.getCurrentLocation().getLongitude());
+            displayDistanceFromUserToLocation(distanceTextView);
 
-            String dist = Double.toString(distance);
-            distanceTextView.setText(dist);
+//            double distance = brain.getDistanceBetweenTwo(location.getLatitude(),location.getLongitude(),
+//                    brain.getCurrentLocation().getLatitude(),brain.getCurrentLocation().getLongitude());
+//
+//            String dist = Double.toString(distance);
+//            distanceTextView.setText(dist);
 
             if(location.isHasVisited()){
                 itemView.setBackgroundColor(Color.parseColor("#ecf0f1"));
@@ -167,6 +169,19 @@ public class LocationListFragment extends Fragment {
                 locationTypeTextView.setTextColor(Color.parseColor("#bdc3c7"));
             }
         }
+
+        public void displayDistanceFromUserToLocation(TextView distanceText) {
+            if (brain.getCurrentLocation() != null) {
+                double distance = brain.getDistanceBetweenTwo(location.getLatitude(),location.getLongitude(),
+                        brain.getCurrentLocation().getLatitude(),brain.getCurrentLocation().getLongitude());
+
+                String dist = Double.toString(distance);
+                distanceText.setText(" -   " + dist + " mi");
+            } else {
+                distanceText.setText("");
+            }
+        }
+
 
         @Override
         public void onClick(View v) {

@@ -20,7 +20,7 @@
                 android:id="@+id/location_fragment_image"
                 android:background="?android:attr/scrollbarThumbVertical" />
 
-        <LinearLayout
+            <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -52,16 +52,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView"
+                android:id="@+id/location_fragement_distance"
                 android:textSize="18sp"
-                android:text=" - " />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView2"
-                android:textSize="18sp"
-                android:text="0.0 mi"
+                android:text=" - 0.0 mi"
                 android:layout_weight="1" />
         </LinearLayout>
 
