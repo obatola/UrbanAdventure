@@ -103,7 +103,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
-        setContentView(R.layout.activity_maps);
+//        setContentView(R.layout.activity_maps);
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
             checkLocationPermission();
