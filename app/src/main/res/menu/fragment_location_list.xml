@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <item
-        android:id="@+id/list_leaderboard"
-        android:icon="@drawable/ic_leaderboard_white_24dp"
-        android:title="Leaderboard"
-        app:showAsAction="ifRoom"/>
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      >
 
     <item android:id="@+id/map"
         android:icon="@drawable/ic_place_white_24dp"
         android:title="Map"
         app:showAsAction="ifRoom" />
+    <item
+
+        android:id="@+id/menu_item_show_subtitle"
+        android:title="@string/visited"
+        app:showAsAction="ifRoom"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Inverse"/>
+
+  <item
+        android:id="@+id/list_leaderboard"
+        android:icon="@drawable/ic_leaderboard_white_24dp"
+        android:title="Leaderboard"
+        app:showAsAction="ifRoom"/>
+
 </menu>

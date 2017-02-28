@@ -1,6 +1,8 @@
 package com.example.obatolaseward_evans.urbanadventure;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.Nullable;
@@ -9,7 +11,10 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -55,6 +60,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Point size = new Point();
+        Display display = this.getWindowManager().getDefaultDisplay();
+        display.getSize(size);
+        int width = size.x;
+        Log.e("MapsActivity", "width: " + width);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
@@ -70,10 +82,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             allLocations.addAll(locationLab.getLocations());
         }
 
+
+
+        setContentView(R.layout.activity_maps);
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -123,6 +137,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.mapview_actionbar, menu);
+
+        String vi = getString(R.string.visited);
+
+        MenuItem vis = menu.findItem(R.id.menu_item_show_subtitle);
+
+//        SpannableString spanString = new SpannableString(vi);
+//        spanString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, spanString.length(), 0); // fix the color to gray
+//
+//        vis.setTitle(spanString);
+
         return true;
     }
 

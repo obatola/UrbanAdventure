@@ -7,4 +7,6 @@
     <string name="category">Category:</string>
     <string name="location">Location:</string>
     <string name="description">Description:</string>
+    <string name="map">Map</string>
+    <string name="visited">Visited?</string>
 </resources>
