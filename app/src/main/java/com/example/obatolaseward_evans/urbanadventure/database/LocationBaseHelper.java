@@ -25,6 +25,8 @@ public class LocationBaseHelper extends SQLiteOpenHelper {
                 LocationTable.Cols.LOCATIONTYPE + ", " +
                 LocationTable.Cols.PICTUREPATH + ", " +
                 LocationTable.Cols.DESCRIPTION + ", " +
+                LocationTable.Cols.PHONENUMBER + ", " +
+                LocationTable.Cols.WEBSITEURL + ", " +
                 LocationTable.Cols.LONGITUDE + ", " +
                 LocationTable.Cols.LATITUDE + ", " +
                 LocationTable.Cols.HASVISITED +

@@ -3,12 +3,16 @@ package com.example.obatolaseward_evans.urbanadventure;
 import android.annotation.TargetApi;
 import android.content.Intent;
 
+import android.net.Uri;
+
+
 import android.graphics.Point;
 
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -22,10 +26,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -52,6 +62,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private List<Location> allLocations = new ArrayList<Location>();
     private LocationLab locationLab;
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
     private Brain brain = Brain.getInstance();
 
     // For current location
@@ -77,7 +94,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationLab = LocationLab.get(this);
 
         //make sure locations are populated and copied into allLocation array
-        if(locationLab.getLocations().size() < 1) {
+        if (locationLab.getLocations().size() < 1) {
             populateDatabase();
         } else {
             //make sure not duplicating
@@ -96,6 +113,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
@@ -181,7 +201,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         //make sure locations are populated and copied into allLocation array
-        if(locationLab.getLocations().size() < 1) {
+        if (locationLab.getLocations().size() < 1) {
             populateDatabase();
         } else {
             //make sure not duplicating
@@ -237,6 +257,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 "undergraduate and graduate degree programs in science, engineering, technology, business, the social " +
                 "sciences, and the humanities and arts, leading to bachelor’s, master’s, and doctoral degrees. ";
         Location wpi = new Location("Worcester Polytechnic Institute", LocationType.WPIFACILITY, wpid, 42.2746, -71.8063);
+        wpi.setWebsiteURL("https://www.wpi.edu");
+        wpi.setPhoneNumber("5088315000");
         wpi.setPicturePath("wpi");
 
         String rec = "The Sports & Recreation Center offers many opportunities for fitness, recreation, weight lifting, cardio " +
@@ -248,7 +270,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         String fuller = "The Sports & Recreation Center offers many opportunities for fitness, recreation, weight lifting, " +
                 "cardio exercise, swimming, racquet sports, yoga, and aerobics. Spread across four floors, the Sports & " +
                 "Recreation Center serves our varsity athletes as well as our community members maintaining their fitness regimen.";
-        Location fullerLabs = new Location("Fuller Labs", LocationType.WPIFACILITY, fuller , 42.275060, -71.806522);
+        Location fullerLabs = new Location("Fuller Labs", LocationType.WPIFACILITY, fuller, 42.275060, -71.806522);
         fullerLabs.setPicturePath("fuller");
 
         String lib = "Opened in 1967, George C. Gordon Library is named for one of its benefactors who graduated from WPI " +
@@ -348,10 +370,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     // Populate map with markers in allLocations
-    public void  populateMap(GoogleMap map){
+    public void populateMap(GoogleMap map) {
         float markerColor;
 
-        for (Location loc: allLocations) {
+        for (Location loc : allLocations) {
 
             markerColor = getCorrespondingMarkerColor(loc);
 
@@ -366,7 +388,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(this);
     }
 
-    private float getCorrespondingMarkerColor(Location loc){
+    private float getCorrespondingMarkerColor(Location loc) {
         LocationType type = loc.getLocationType();
 
         if (loc.isHasVisited()) {
@@ -402,6 +424,42 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Intent intent = LocationPagerActivity.newIntent(this, locationID);
         startActivity(intent);
         return true;
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Maps Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
     }
 
     @Override
@@ -464,5 +522,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return;
             }
         }
+
     }
 }

@@ -22,10 +22,14 @@ public class LocationCursorWrapper extends CursorWrapper {
         double longitude = getDouble(getColumnIndex(LocationTable.Cols.LONGITUDE));
         double latitude = getDouble(getColumnIndex(LocationTable.Cols.LATITUDE));
         int hasVisited = getInt(getColumnIndex(LocationTable.Cols.HASVISITED));
+        String phoneNumber = getString(getColumnIndex(LocationTable.Cols.PHONENUMBER));
+        String websiteURL = getString(getColumnIndex(LocationTable.Cols.WEBSITEURL));
 
         Location location = new Location(title, locationType, description, latitude, longitude);
         location.setId(UUID.fromString(uuidString));
         location.setPicturePath(picturePath);
+        location.setPhoneNumber(phoneNumber);
+        location.setWebsiteURL(websiteURL);
         location.setHasVisited(hasVisited != 0);
 
         return location;

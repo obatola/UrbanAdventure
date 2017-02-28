@@ -14,6 +14,8 @@ public class Location {
     private double longitude;
     private double latitude;
     private boolean hasVisited;
+    private String phoneNumber;
+    private String websiteURL;
 
     public Location() {
         id = UUID.randomUUID();
@@ -23,6 +25,8 @@ public class Location {
         longitude = 0;
         latitude = 0;
         hasVisited = false;
+        phoneNumber = "";
+        websiteURL = "";
 
     }
 
@@ -33,6 +37,8 @@ public class Location {
         description = locDescription;
         latitude = locLatitude;
         longitude = locLongitude;
+        phoneNumber = "";
+        websiteURL = "";
     }
 
     //constructor for db with locType = int
@@ -127,4 +133,19 @@ public class Location {
         return new LatLng(latitude, longitude);
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getWebsiteURL() {
+        return websiteURL;
+    }
+
+    public void setWebsiteURL(String websiteURL) {
+        this.websiteURL = websiteURL;
+    }
 }
