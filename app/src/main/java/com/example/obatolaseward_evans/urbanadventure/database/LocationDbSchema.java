@@ -10,11 +10,12 @@ public class LocationDbSchema {
             public static final String LOCATIONTYPE = "locationType";
             public static final String PICTUREPATH = "picturePath";
             public static final String DESCRIPTION = "description";
+            public static final String PHONENUMBER = "phoneNumber";
+            public static final String WEBSITEURL = "websiteURL";
             public static final String LONGITUDE = "longitude";
             public static final String LATITUDE = "latitude";
             public static final String HASVISITED = "hasVisited";
-            public static final String WEBSITEURL = "websiteURL";
-            public static final String PHONENUMBER = "phoneNumber";
+
         }
     }
 }

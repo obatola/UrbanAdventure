@@ -37,6 +37,8 @@ public class Location {
         description = locDescription;
         latitude = locLatitude;
         longitude = locLongitude;
+        phoneNumber = "";
+        websiteURL = "";
     }
 
     //constructor for db with locType = int

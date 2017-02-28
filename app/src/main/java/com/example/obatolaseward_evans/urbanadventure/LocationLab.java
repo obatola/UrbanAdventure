@@ -88,9 +88,12 @@ public class LocationLab {
         values.put(LocationTable.Cols.LOCATIONTYPE, location.getLocationTypeInt());
         values.put(LocationTable.Cols.PICTUREPATH, location.getPicturePath());
         values.put(LocationTable.Cols.DESCRIPTION, location.getDescription());
+        values.put(LocationTable.Cols.PHONENUMBER, location.getPhoneNumber());
+        values.put(LocationTable.Cols.WEBSITEURL, location.getWebsiteURL());
         values.put(LocationTable.Cols.LONGITUDE, location.getLongitude());
         values.put(LocationTable.Cols.LATITUDE, location.getLatitude());
         values.put(LocationTable.Cols.HASVISITED, location.isHasVisited() ? 1 : 0);
+
 
         return values;
     }
