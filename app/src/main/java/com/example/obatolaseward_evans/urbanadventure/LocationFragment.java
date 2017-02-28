@@ -16,6 +16,8 @@ import java.util.UUID;
 public class LocationFragment extends Fragment {
 
     private static final String ARG_LOCATION_ID = "location_id";
+    private Brain brain = Brain.getInstance();
+    private TextView distanceText;
 
     private Location location;
     private Button directionButton;
@@ -48,6 +50,13 @@ public class LocationFragment extends Fragment {
                 .updateLocation(location);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        displayDistanceFromUserToLocation();
+
+    }
+
     //TODO: fill with location fragment info (image view and text view of location)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +65,7 @@ public class LocationFragment extends Fragment {
         TextView title = (TextView)v.findViewById(R.id.location_fragement_title);
         TextView type = (TextView)v.findViewById(R.id.location_fragement_category);
         TextView des = (TextView)v.findViewById(R.id.location_fragement_descripton);
+        distanceText = (TextView)v.findViewById(R.id.location_fragement_distance);
         ImageView image = (ImageView)v.findViewById(R.id.location_fragment_image);
         directionButton = (Button) v.findViewById(R.id.location_fragment_directions_button);
         phoneButton = (Button) v.findViewById(R.id.location_fragment_phone_button);
@@ -74,7 +84,6 @@ public class LocationFragment extends Fragment {
         int id = getResources().getIdentifier(im, "drawable", getActivity().getPackageName());
 
         image.setImageResource(id);
-
         return v;
     }
 
@@ -128,6 +137,20 @@ public class LocationFragment extends Fragment {
                 getGoogleMapDirections(location.getLatitude(), location.getLongitude());
             }
         });
+    }
+
+
+    public void displayDistanceFromUserToLocation() {
+
+        if (brain.getCurrentLocation() != null) {
+            double distance = brain.getDistanceBetweenTwo(location.getLatitude(),location.getLongitude(),
+                    brain.getCurrentLocation().getLatitude(),brain.getCurrentLocation().getLongitude());
+
+            String dist = Double.toString(distance);
+            distanceText.setText(" - " + dist + " mi");
+        } else {
+            distanceText.setText("");
+        }
     }
 
     private void getGoogleMapDirections(double latitude, double longitude) {

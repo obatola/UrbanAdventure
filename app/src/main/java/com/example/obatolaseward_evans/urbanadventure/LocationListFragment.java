@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,10 +34,15 @@ public class LocationListFragment extends Fragment {
     private RecyclerView locationRecyclerView;
     private LocationAdapter adapter;
     private boolean subtitleVisible;
+    //created to get all locations for our singleton class
+    //LocationLab locationLab;
+    //List<Location> allLocations;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        allLocations.addAll(locationLab.getLocations());
         setHasOptionsMenu(true);
     }
 
@@ -72,6 +79,16 @@ public class LocationListFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_location_list, menu);
+
+        String vi = getString(R.string.visited);
+
+        MenuItem vis = menu.findItem(R.id.menu_item_show_subtitle);
+
+        SpannableString spanString = new SpannableString(vi);
+        spanString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, spanString.length(), 0); // fix the color to gray
+
+        vis.setTitle(spanString);
+
 
         updateLocationNum();
     }
@@ -118,6 +135,8 @@ public class LocationListFragment extends Fragment {
             adapter.notifyDataSetChanged();
         }
 
+
+
         updateLocationNum();
     }
 
@@ -127,9 +146,10 @@ public class LocationListFragment extends Fragment {
         private TextView titleTextView;
         private TextView locationTypeTextView;
         private AppCompatCheckBox visitedCheckBox;
+        private TextView distanceTextView;
+        Brain brain = Brain.getInstance();
 
         private Location location;
-
         public LocationHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -137,6 +157,10 @@ public class LocationListFragment extends Fragment {
             titleTextView = (TextView) itemView.findViewById(R.id.list_item_location_title_text_view);
             locationTypeTextView = (TextView) itemView.findViewById(R.id.list_item_location_type_text_view);
             visitedCheckBox = (AppCompatCheckBox) itemView.findViewById(R.id.list_item_location_visited_check_box);
+            distanceTextView = (TextView) itemView.findViewById(R.id.list_item_location_type_distance_view);
+
+
+
         }
 
         public void bindLocation(Location bLocation) {
@@ -144,12 +168,34 @@ public class LocationListFragment extends Fragment {
             titleTextView.setText(location.getTitle());
             locationTypeTextView.setText(location.getLocationType().toString());
             visitedCheckBox.setChecked(location.isHasVisited());
+
+            displayDistanceFromUserToLocation(distanceTextView);
+
+//            double distance = brain.getDistanceBetweenTwo(location.getLatitude(),location.getLongitude(),
+//                    brain.getCurrentLocation().getLatitude(),brain.getCurrentLocation().getLongitude());
+//
+//            String dist = Double.toString(distance);
+//            distanceTextView.setText(dist);
+
             if(location.isHasVisited()){
                 itemView.setBackgroundColor(Color.parseColor("#ecf0f1"));
                 titleTextView.setTextColor(Color.parseColor("#bdc3c7"));
                 locationTypeTextView.setTextColor(Color.parseColor("#bdc3c7"));
             }
         }
+
+        public void displayDistanceFromUserToLocation(TextView distanceText) {
+            if (brain.getCurrentLocation() != null) {
+                double distance = brain.getDistanceBetweenTwo(location.getLatitude(),location.getLongitude(),
+                        brain.getCurrentLocation().getLatitude(),brain.getCurrentLocation().getLongitude());
+
+                String dist = Double.toString(distance);
+                distanceText.setText(" -   " + dist + " mi");
+            } else {
+                distanceText.setText("");
+            }
+        }
+
 
         @Override
         public void onClick(View v) {
