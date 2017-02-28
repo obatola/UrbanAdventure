@@ -189,6 +189,10 @@ public class LocationListFragment extends Fragment {
                 double distance = brain.getDistanceBetweenTwo(location.getLatitude(),location.getLongitude(),
                         brain.getCurrentLocation().getLatitude(),brain.getCurrentLocation().getLongitude());
 
+
+                // round distance
+                distance = Math.round(distance * 10) / 10.0;
+
                 String dist = Double.toString(distance);
                 distanceText.setText(" -   " + dist + " mi");
             } else {
