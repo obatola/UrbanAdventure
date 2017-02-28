@@ -2,6 +2,7 @@ package com.example.obatolaseward_evans.urbanadventure;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+
 import android.graphics.Point;
 
 import android.content.pm.PackageManager;
@@ -83,7 +84,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             allLocations.clear();
             allLocations.addAll(locationLab.getLocations());
         }
-
 
 
         setContentView(R.layout.activity_maps);

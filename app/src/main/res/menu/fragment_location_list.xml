@@ -20,6 +20,4 @@
         app:showAsAction="ifRoom"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Inverse"/>
 
-
-
 </menu>
