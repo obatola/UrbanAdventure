@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -73,6 +75,16 @@ public class LocationListFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_location_list, menu);
 
+        String vi = getString(R.string.visited);
+
+        MenuItem vis = menu.findItem(R.id.menu_item_show_subtitle);
+
+        SpannableString spanString = new SpannableString(vi);
+        spanString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, spanString.length(), 0); // fix the color to gray
+
+        vis.setTitle(spanString);
+
+
         updateLocationNum();
     }
 
@@ -117,6 +129,8 @@ public class LocationListFragment extends Fragment {
             adapter.setLocations(locations);
             adapter.notifyDataSetChanged();
         }
+
+
 
         updateLocationNum();
     }

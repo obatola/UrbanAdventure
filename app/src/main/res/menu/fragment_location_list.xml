@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <item
-        android:id="@+id/menu_item_show_subtitle"
-        android:title="Visited"
-        app:showAsAction="ifRoom"/>
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      >
 
     <item android:id="@+id/map"
-        android:title="Map"
-        app:showAsAction="ifRoom" />
+          android:title="@string/map"
+          app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_item_show_subtitle"
+        android:title="@string/visited"
+        app:showAsAction="ifRoom"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Inverse"/>
+
 </menu>
