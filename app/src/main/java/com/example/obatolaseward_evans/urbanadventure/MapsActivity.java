@@ -1,12 +1,15 @@
 package com.example.obatolaseward_evans.urbanadventure;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
-import android.graphics.Color;
+
 import android.graphics.Point;
+
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -83,11 +86,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
-
         setContentView(R.layout.activity_maps);
+
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -96,6 +100,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
 
+    @TargetApi(Build.VERSION_CODES.M)
     public boolean checkLocationPermission() {
         // In Android 6.0 and higher you need to request permissions at runtime, and the user has
         // the ability to grant or deny each permission. Users can also revoke a previously-granted
