@@ -1,6 +1,7 @@
 package com.example.obatolaseward_evans.urbanadventure;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 
 import android.net.Uri;
@@ -25,6 +26,7 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import com.google.android.gms.appindexing.Action;
@@ -103,7 +105,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
-        setContentView(R.layout.activity_maps);
+//        setContentView(R.layout.activity_maps);
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -342,12 +344,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Location newtonHill = new Location("Newton Hill", LocationType.CULTURE, newton, 42.267565, -71.819960);
         newtonHill.setPicturePath("newton");
 
-        //TODO: delete later
-        newtonHill.setHasVisited(true);
-        recCenter.setHasVisited(true);
-        gateway.setHasVisited(true);
-        wooberry.setHasVisited(true);
-
         locationLab.addLocation(wpi);
         locationLab.addLocation(recCenter);
         locationLab.addLocation(beanCounter);
@@ -489,11 +485,36 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mLocationMarker.remove();
         }
 
+        checkIfAtLocation();
+
         // To help preserve the device’s battery life, you’ll typically want to use
         // removeLocationUpdates to suspend location updates when your app is no longer
         // visible onscreen//
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
+    }
+
+    private void checkIfAtLocation() {
+        android.location.Location currentLoc = brain.getCurrentLocation();
+
+        for (Location location: allLocations) {
+            if (!location.isHasVisited()) { // if you haven't visited the location.
+                // 0.02 mi is 105 feet
+                if (0.02 >=  brain.getDistanceBetweenTwo(location.getLatitude(), location.getLongitude(), currentLoc.getLatitude(), currentLoc.getLongitude())) {
+                    Context context = getApplicationContext();
+                    CharSequence text = "Congradulations You've Visited" + location.getTitle();
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    // set location in alllocations as visited:
+                    location.setHasVisited(true);
+                    // update location in db as visited:
+                    locationLab.updateLocation(location);
+                }
+            }
         }
     }
 
