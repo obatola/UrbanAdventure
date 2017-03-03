@@ -1,9 +1,14 @@
 package com.example.obatolaseward_evans.urbanadventure;
 
+import android.*;
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 
 
@@ -31,8 +36,8 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import android.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -55,6 +60,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private List<AreaLocation> allAreaLocations = new ArrayList<AreaLocation>();
     private LocationLab locationLab;
+    private LocationManager locationManager;
+    private String provider;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -109,6 +116,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        // Get the location manager
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        // Define the criteria how to select the locatioin provider -> use
+        // default
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+        Location location = locationManager.getLastKnownLocation(provider);
+
+        // Initialize the location fields
+        if (location != null) {
+            System.out.println("Provider " + provider + " has been selected.");
+            onLocationChanged(location);
+        } else {
+            viewToast("Location not available");
+        }
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
@@ -451,14 +474,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(2000);
         if (ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             // Retrieve the user’s last known location//
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
-                    mLocationRequest, this);
+            locationManager.requestLocationUpdates(provider, 400, 1, this);
+
+//            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
     }
 
@@ -476,16 +498,34 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mLocationMarker.remove();
         }
 
+
+        viewToast("changed location");
         checkIfAtLocation();
 
         // To help preserve the device’s battery life, you’ll typically want to use
         // removeLocationUpdates to suspend location updates when your app is no longer
         // visible onscreen//
         if (mGoogleApiClient != null) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+//            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
     }
 
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        viewToast("Enabled new provider " + provider);
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        viewToast("Disabled provider " + provider);
+    }
+
+    // Custom ratchet geofencing!!!
     private void checkIfAtLocation() {
         android.location.Location currentLoc = brain.getCurrentLocation();
 
@@ -507,6 +547,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         }
+    }
+
+    public void viewToast(String msg) {
+        Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override
@@ -534,6 +579,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return;
             }
         }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        locationManager.requestLocationUpdates(provider, 400, 1, this);
+    }
+
+    /* Remove the locationlistener updates when Activity is paused */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        locationManager.removeUpdates(this);
     }
 }
