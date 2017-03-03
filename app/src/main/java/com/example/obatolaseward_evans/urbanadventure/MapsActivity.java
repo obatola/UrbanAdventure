@@ -1,6 +1,5 @@
 package com.example.obatolaseward_evans.urbanadventure;
 
-import android.*;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -303,6 +302,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 "exercise, swimming, racquet sports, yoga, and aerobics. Spread across four floors, the Sports & Recreation " +
                 "Center serves our varsity athletes as well as our community members maintaining their fitness regimen.";
         AreaLocation recCenter = new AreaLocation("Rec Center", LocationType.WPIFACILITY, rec, 42.274205, -71.810708);
+        recCenter.setWebsiteURL("https://www.wpi.edu/student-experience/sports-recreation/sports-recreation-center");
+        recCenter.setPhoneNumber("5088315046");
         recCenter.setPicturePath("rec");
 
         String fuller = "The Sports & Recreation Center offers many opportunities for fitness, recreation, weight lifting, " +
@@ -315,6 +316,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 "with an electrical engineering degree in 1895. Gordon generously bequeathed $5 million of his estate to the Institute in 1964. " +
                 "Today, Gordon Library is one of the busiest buildings on campus-with an average of 13,000+ visitors per week during the academic year.";
         AreaLocation library = new AreaLocation("Gordon Library", LocationType.WPIFACILITY, lib, 42.274229, -71.806352);
+        library.setWebsiteURL("https://web.wpi.edu/academics/library");
+        library.setPhoneNumber("15088315410");
         library.setPicturePath("lib");
 
         String cc = "WPI’s Rubin Campus Center is at the crossroads of the campus. Whether you want to pick up your mail, grab a cup of coffee, " +
