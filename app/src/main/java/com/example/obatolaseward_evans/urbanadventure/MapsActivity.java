@@ -437,9 +437,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void vibratePhone() {
-//        Vibrator v = (Vibrator) this.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-//        // Vibrate for 500 milliseconds
-//        v.vibrate(500);
+        Vibrator v = (Vibrator) this.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(500);
     }
 
     private float getCorrespondingMarkerColor(AreaLocation loc) {
