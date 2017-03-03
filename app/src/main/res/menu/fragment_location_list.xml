@@ -9,12 +9,6 @@
           app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/list_leaderboard"
-        android:icon="@drawable/ic_leaderboard_white_24dp"
-        android:title="Leaderboard"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/menu_item_show_subtitle"
         android:title="@string/visited"
         app:showAsAction="ifRoom"
