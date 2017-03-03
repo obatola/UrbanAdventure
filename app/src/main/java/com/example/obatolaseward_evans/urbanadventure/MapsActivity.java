@@ -16,6 +16,7 @@ import android.graphics.Point;
 
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 
@@ -51,6 +52,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,6 +63,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private List<AreaLocation> allAreaLocations = new ArrayList<AreaLocation>();
+    private HashMap<String, Marker> allMarkers = new HashMap<>();
     private LocationLab locationLab;
     private LocationManager locationManager;
     private String provider;
@@ -251,7 +254,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(wpi.getLatLng(), 16));
         }
 
-        populateMap(mMap);
+        populateMap();
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -399,22 +402,44 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     // Populate map with markers in allAreaLocations
-    public void populateMap(GoogleMap map) {
-        float markerColor;
+    public void populateMap() {
 
         for (AreaLocation loc : allAreaLocations) {
-
-            markerColor = getCorrespondingMarkerColor(loc);
-
-            Marker m = map.addMarker(new MarkerOptions()
-                    .position(loc.getLatLng()).title(loc.getTitle())
-                    .icon(BitmapDescriptorFactory
-                            .defaultMarker(markerColor)));
-
-            m.setTag(loc.getId());
+            addLocationMarker(loc);
         }
 
         mMap.setOnMarkerClickListener(this);
+    }
+
+    public void addLocationMarker(AreaLocation loc) {
+        float markerColor;
+        markerColor = getCorrespondingMarkerColor(loc);
+
+        Marker m = mMap.addMarker(new MarkerOptions()
+                .position(loc.getLatLng()).title(loc.getTitle())
+                .icon(BitmapDescriptorFactory
+                        .defaultMarker(markerColor)));
+
+        allMarkers.put(loc.getTitle(), m);
+
+        m.setTag(loc.getId());
+    }
+
+    // Change color of a specified marker on the map.
+    public void updateMapMarker(AreaLocation loc) {
+        Marker m = allMarkers.get(loc.getTitle());
+
+        if (m != null) {
+            // refresh marker with new color
+            m.remove();
+            addLocationMarker(loc);
+        }
+    }
+
+    public void vibratePhone() {
+//        Vibrator v = (Vibrator) this.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+//        // Vibrate for 500 milliseconds
+//        v.vibrate(500);
     }
 
     private float getCorrespondingMarkerColor(AreaLocation loc) {
@@ -521,7 +546,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         checkIfAtLocation();
-        viewToast("changed location");
+//        viewToast("changed location");
 
         // To help preserve the device’s battery life, you’ll typically want to use
         // removeLocationUpdates to suspend location updates when your app is no longer
@@ -564,8 +589,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     // set areaLocation in alllocations as visited:
                     areaLocation.setHasVisited(true);
+
+                    vibratePhone();
                     // update areaLocation in db as visited:
                     locationLab.updateLocation(areaLocation);
+                    // updateMapMarker
+                    updateMapMarker(areaLocation);
                 }
             }
         }
