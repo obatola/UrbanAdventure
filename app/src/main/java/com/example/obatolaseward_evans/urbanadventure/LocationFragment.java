@@ -19,7 +19,7 @@ public class LocationFragment extends Fragment {
     private Brain brain = Brain.getInstance();
     private TextView distanceText;
 
-    private Location location;
+    private AreaLocation areaLocation;
     private Button directionButton;
     private Button phoneButton;
     private Button websiteButton;
@@ -39,7 +39,7 @@ public class LocationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID locationId = (UUID) getArguments().getSerializable(ARG_LOCATION_ID);
-        location = LocationLab.get(getActivity()).getLocation(locationId);
+        areaLocation = LocationLab.get(getActivity()).getLocation(locationId);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class LocationFragment extends Fragment {
         super.onPause();
 
         LocationLab.get(getActivity())
-                .updateLocation(location);
+                .updateLocation(areaLocation);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class LocationFragment extends Fragment {
 
     }
 
-    //TODO: fill with location fragment info (image view and text view of location)
+    //TODO: fill with areaLocation fragment info (image view and text view of areaLocation)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_location, container, false);
@@ -73,13 +73,13 @@ public class LocationFragment extends Fragment {
 
         initializeButtons();
 
-        title.setText(location.getTitle());
-        type.setText(location.getLocationType().toString());
+        title.setText(areaLocation.getTitle());
+        type.setText(areaLocation.getLocationType().toString());
 
-        String description = location.getDescription();
+        String description = areaLocation.getDescription();
         des.setText(description);
 
-        String im = "@drawable/" + location.getPicturePath();
+        String im = "@drawable/" + areaLocation.getPicturePath();
 
         int id = getResources().getIdentifier(im, "drawable", getActivity().getPackageName());
 
@@ -88,27 +88,27 @@ public class LocationFragment extends Fragment {
     }
 
     private void initializeButtons() {
-        if (location.getPhoneNumber() == null) {
-            Log.d("locationdetailview", "phone number: " + location.getPhoneNumber());
+        if (areaLocation.getPhoneNumber() == null) {
+            Log.d("locationdetailview", "phone number: " + areaLocation.getPhoneNumber());
             phoneButton.setVisibility(View.GONE);
         } else {
             phoneButton.setVisibility(View.VISIBLE);
             phoneButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    callPhoneNumber(location.getPhoneNumber());
+                    callPhoneNumber(areaLocation.getPhoneNumber());
                 }
             });
         }
 
-        if (location.getWebsiteURL() == null) {
+        if (areaLocation.getWebsiteURL() == null) {
             websiteButton.setVisibility(View.GONE);
         } else {
             websiteButton.setVisibility(View.VISIBLE);
             websiteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openWebsite(location.getWebsiteURL());
+                    openWebsite(areaLocation.getWebsiteURL());
                 }
             });
         }
@@ -117,8 +117,8 @@ public class LocationFragment extends Fragment {
 //        phoneButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                Log.d(null, location.getPhoneNumber());
-//                callPhoneNumber(location.getPhoneNumber());
+//                Log.d(null, areaLocation.getPhoneNumber());
+//                callPhoneNumber(areaLocation.getPhoneNumber());
 //            }
 //        });
 //
@@ -126,15 +126,15 @@ public class LocationFragment extends Fragment {
 //        websiteButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                Log.d(null, location.getWebsiteURL());
-//                openWebsite(location.getWebsiteURL());
+//                Log.d(null, areaLocation.getWebsiteURL());
+//                openWebsite(areaLocation.getWebsiteURL());
 //            }
 //        });
 
         directionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getGoogleMapDirections(location.getLatitude(), location.getLongitude());
+                getGoogleMapDirections(areaLocation.getLatitude(), areaLocation.getLongitude());
             }
         });
     }
@@ -143,7 +143,7 @@ public class LocationFragment extends Fragment {
     public void displayDistanceFromUserToLocation() {
 
         if (brain.getCurrentLocation() != null) {
-            double distance = brain.getDistanceBetweenTwo(location.getLatitude(),location.getLongitude(),
+            double distance = brain.getDistanceBetweenTwo(areaLocation.getLatitude(), areaLocation.getLongitude(),
                     brain.getCurrentLocation().getLatitude(),brain.getCurrentLocation().getLongitude());
 
             // round distance

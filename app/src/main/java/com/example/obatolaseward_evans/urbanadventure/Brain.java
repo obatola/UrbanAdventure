@@ -23,13 +23,13 @@ public class Brain {
         return instance;
     }
 
-    //returns hashmap with locations and its distances frmo the given current Location
-    private HashMap<Location,Double> getDistanceAll(Location currentLocation, List<Location> allLocations){
-        double latitude = currentLocation.getLatitude();
-        double longtitude = currentLocation.getLongitude();
-        HashMap<Location,Double> locationDistances = new HashMap<Location,Double>();
-        for(int i=0;i<allLocations.size();i++){
-            Location a = allLocations.get(i);
+    //returns hashmap with locations and its distances frmo the given current AreaLocation
+    private HashMap<AreaLocation,Double> getDistanceAll(AreaLocation currentAreaLocation, List<AreaLocation> allAreaLocations){
+        double latitude = currentAreaLocation.getLatitude();
+        double longtitude = currentAreaLocation.getLongitude();
+        HashMap<AreaLocation,Double> locationDistances = new HashMap<AreaLocation,Double>();
+        for(int i = 0; i< allAreaLocations.size(); i++){
+            AreaLocation a = allAreaLocations.get(i);
             double alat = a.getLatitude();
             double alng = a.getLongitude();
             double distance = getDistanceBetweenTwo(latitude,longtitude,alat,alng);
@@ -38,9 +38,9 @@ public class Brain {
         return locationDistances;
     }
 
-    private double getDistance(Location currentLocation,Location other){
-        double latitude = currentLocation.getLatitude();
-        double longtitude = currentLocation.getLongitude();
+    private double getDistance(AreaLocation currentAreaLocation, AreaLocation other){
+        double latitude = currentAreaLocation.getLatitude();
+        double longtitude = currentAreaLocation.getLongitude();
         double lat2 = other.getLatitude();
         double lng2 = other.getLongitude();
         double distance = getDistanceBetweenTwo(latitude,longtitude,lat2,lng2);
@@ -72,7 +72,7 @@ public class Brain {
     }
 
     /*
-    public static void sort(List<Location> allLocations, List<Double> distances){
+    public static void sort(List<AreaLocation> allLocations, List<Double> distances){
         for(int i=0;i<distances.size();i++){
             for(int j=0;j<distances.size();j++){
                 if(distances.get(j)<distances.get(i)){

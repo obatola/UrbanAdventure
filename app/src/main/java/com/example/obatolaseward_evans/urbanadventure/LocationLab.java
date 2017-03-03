@@ -33,28 +33,28 @@ public class LocationLab {
     }
 
 
-    public void addLocation(Location c) {
+    public void addLocation(AreaLocation c) {
         ContentValues values = getContentValues(c);
 
         database.insert(LocationTable.NAME, null, values);
     }
 
-    public List<Location> getLocations() {
-        List<Location> location = new ArrayList<>();
+    public List<AreaLocation> getLocations() {
+        List<AreaLocation> areaLocation = new ArrayList<>();
 
         LocationCursorWrapper cursor = queryLocation(null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            location.add(cursor.getLocation());
+            areaLocation.add(cursor.getLocation());
             cursor.moveToNext();
         }
         cursor.close();
 
-        return location;
+        return areaLocation;
     }
 
-    public Location getLocation(UUID id) {
+    public AreaLocation getLocation(UUID id) {
         LocationCursorWrapper cursor = queryLocation(
                 LocationTable.Cols.UUID + " = ?",
                 new String[] { id.toString() }
@@ -72,27 +72,27 @@ public class LocationLab {
         }
     }
 
-    public void updateLocation(Location location) {
-        String uuidString = location.getId().toString();
-        ContentValues values = getContentValues(location);
+    public void updateLocation(AreaLocation areaLocation) {
+        String uuidString = areaLocation.getId().toString();
+        ContentValues values = getContentValues(areaLocation);
 
         database.update(LocationTable.NAME, values,
                 LocationTable.Cols.UUID + " = ?",
                 new String[] { uuidString });
     }
 
-    private static ContentValues getContentValues(Location location) {
+    private static ContentValues getContentValues(AreaLocation areaLocation) {
         ContentValues values = new ContentValues();
-        values.put(LocationTable.Cols.UUID, location.getId().toString());
-        values.put(LocationTable.Cols.TITLE, location.getTitle());
-        values.put(LocationTable.Cols.LOCATIONTYPE, location.getLocationTypeInt());
-        values.put(LocationTable.Cols.PICTUREPATH, location.getPicturePath());
-        values.put(LocationTable.Cols.DESCRIPTION, location.getDescription());
-        values.put(LocationTable.Cols.PHONENUMBER, location.getPhoneNumber());
-        values.put(LocationTable.Cols.WEBSITEURL, location.getWebsiteURL());
-        values.put(LocationTable.Cols.LONGITUDE, location.getLongitude());
-        values.put(LocationTable.Cols.LATITUDE, location.getLatitude());
-        values.put(LocationTable.Cols.HASVISITED, location.isHasVisited() ? 1 : 0);
+        values.put(LocationTable.Cols.UUID, areaLocation.getId().toString());
+        values.put(LocationTable.Cols.TITLE, areaLocation.getTitle());
+        values.put(LocationTable.Cols.LOCATIONTYPE, areaLocation.getLocationTypeInt());
+        values.put(LocationTable.Cols.PICTUREPATH, areaLocation.getPicturePath());
+        values.put(LocationTable.Cols.DESCRIPTION, areaLocation.getDescription());
+        values.put(LocationTable.Cols.PHONENUMBER, areaLocation.getPhoneNumber());
+        values.put(LocationTable.Cols.WEBSITEURL, areaLocation.getWebsiteURL());
+        values.put(LocationTable.Cols.LONGITUDE, areaLocation.getLongitude());
+        values.put(LocationTable.Cols.LATITUDE, areaLocation.getLatitude());
+        values.put(LocationTable.Cols.HASVISITED, areaLocation.isHasVisited() ? 1 : 0);
 
 
         return values;

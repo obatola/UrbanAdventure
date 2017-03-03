@@ -1,31 +1,26 @@
 package com.example.obatolaseward_evans.urbanadventure;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT;
-import static com.example.obatolaseward_evans.urbanadventure.R.menu.location;
 
 public class LocationListFragment extends Fragment {
 
@@ -34,9 +29,9 @@ public class LocationListFragment extends Fragment {
     private RecyclerView locationRecyclerView;
     private LocationAdapter adapter;
     private boolean subtitleVisible;
-    //created to get all locations for our singleton class
+    //created to get all areaLocations for our singleton class
     //LocationLab locationLab;
-    //List<Location> allLocations;
+    //List<AreaLocation> allLocations;
 
 
     @Override
@@ -109,7 +104,7 @@ public class LocationListFragment extends Fragment {
     private void updateLocationNum() {
         LocationLab locationLab = LocationLab.get(getActivity());
         int count = 0;
-        List<Location> loc = locationLab.getLocations();
+        List<AreaLocation> loc = locationLab.getLocations();
         for(int i = 0; i < loc.size(); i++){
             if(!loc.get(i).isHasVisited()) {
                 count++;
@@ -125,13 +120,13 @@ public class LocationListFragment extends Fragment {
 
     private void updateUI() {
         LocationLab locationLab = LocationLab.get(getActivity());
-        List<Location> locations = locationLab.getLocations();
+        List<AreaLocation> areaLocations = locationLab.getLocations();
 
         if (adapter == null) {
-            adapter = new LocationAdapter(locations);
+            adapter = new LocationAdapter(areaLocations);
             locationRecyclerView.setAdapter(adapter);
         } else {
-            adapter.setLocations(locations);
+            adapter.setAreaLocations(areaLocations);
             adapter.notifyDataSetChanged();
         }
 
@@ -149,7 +144,7 @@ public class LocationListFragment extends Fragment {
         private TextView distanceTextView;
         Brain brain = Brain.getInstance();
 
-        private Location location;
+        private AreaLocation areaLocation;
         public LocationHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -163,21 +158,21 @@ public class LocationListFragment extends Fragment {
 
         }
 
-        public void bindLocation(Location bLocation) {
-            location = bLocation;
-            titleTextView.setText(location.getTitle());
-            locationTypeTextView.setText(location.getLocationType().toString());
-            visitedCheckBox.setChecked(location.isHasVisited());
+        public void bindLocation(AreaLocation bAreaLocation) {
+            areaLocation = bAreaLocation;
+            titleTextView.setText(areaLocation.getTitle());
+            locationTypeTextView.setText(areaLocation.getLocationType().toString());
+            visitedCheckBox.setChecked(areaLocation.isHasVisited());
 
             displayDistanceFromUserToLocation(distanceTextView);
 
-//            double distance = brain.getDistanceBetweenTwo(location.getLatitude(),location.getLongitude(),
+//            double distance = brain.getDistanceBetweenTwo(areaLocation.getLatitude(),areaLocation.getLongitude(),
 //                    brain.getCurrentLocation().getLatitude(),brain.getCurrentLocation().getLongitude());
 //
 //            String dist = Double.toString(distance);
 //            distanceTextView.setText(dist);
 
-            if(location.isHasVisited()){
+            if(areaLocation.isHasVisited()){
                 itemView.setBackgroundColor(Color.parseColor("#ecf0f1"));
                 titleTextView.setTextColor(Color.parseColor("#bdc3c7"));
                 locationTypeTextView.setTextColor(Color.parseColor("#bdc3c7"));
@@ -186,7 +181,7 @@ public class LocationListFragment extends Fragment {
 
         public void displayDistanceFromUserToLocation(TextView distanceText) {
             if (brain.getCurrentLocation() != null) {
-                double distance = brain.getDistanceBetweenTwo(location.getLatitude(),location.getLongitude(),
+                double distance = brain.getDistanceBetweenTwo(areaLocation.getLatitude(), areaLocation.getLongitude(),
                         brain.getCurrentLocation().getLatitude(),brain.getCurrentLocation().getLongitude());
 
 
@@ -203,17 +198,17 @@ public class LocationListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = LocationPagerActivity.newIntent(getActivity(), location.getId());
+            Intent intent = LocationPagerActivity.newIntent(getActivity(), areaLocation.getId());
             startActivity(intent);
         }
     }
 
     private class LocationAdapter extends RecyclerView.Adapter<LocationHolder> {
 
-        private List<Location> locations;
+        private List<AreaLocation> areaLocations;
 
-        public LocationAdapter(List<Location> lLocations) {
-            locations = lLocations;
+        public LocationAdapter(List<AreaLocation> lAreaLocations) {
+            areaLocations = lAreaLocations;
         }
 
         @Override
@@ -225,17 +220,17 @@ public class LocationListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(LocationHolder holder, int position) {
-            Location location = locations.get(position);
-            holder.bindLocation(location);
+            AreaLocation areaLocation = areaLocations.get(position);
+            holder.bindLocation(areaLocation);
         }
 
         @Override
         public int getItemCount() {
-            return locations.size();
+            return areaLocations.size();
         }
 
-        public void setLocations(List<Location> locations) {
-            this.locations = locations;
+        public void setAreaLocations(List<AreaLocation> areaLocations) {
+            this.areaLocations = areaLocations;
         }
     }
 

@@ -3,8 +3,8 @@ package com.example.obatolaseward_evans.urbanadventure.database;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
+import com.example.obatolaseward_evans.urbanadventure.AreaLocation;
 import com.example.obatolaseward_evans.urbanadventure.database.LocationDbSchema.LocationTable;
-import com.example.obatolaseward_evans.urbanadventure.Location;
 
 import java.util.UUID;
 
@@ -13,7 +13,7 @@ public class LocationCursorWrapper extends CursorWrapper {
         super(cursor);
     }
 
-    public Location getLocation() {
+    public AreaLocation getLocation() {
         String uuidString = getString(getColumnIndex(LocationTable.Cols.UUID));
         String title = getString(getColumnIndex(LocationTable.Cols.TITLE));
         int locationType = getInt(getColumnIndex(LocationTable.Cols.LOCATIONTYPE));
@@ -25,13 +25,13 @@ public class LocationCursorWrapper extends CursorWrapper {
         String phoneNumber = getString(getColumnIndex(LocationTable.Cols.PHONENUMBER));
         String websiteURL = getString(getColumnIndex(LocationTable.Cols.WEBSITEURL));
 
-        Location location = new Location(title, locationType, description, latitude, longitude);
-        location.setId(UUID.fromString(uuidString));
-        location.setPicturePath(picturePath);
-        location.setPhoneNumber(phoneNumber);
-        location.setWebsiteURL(websiteURL);
-        location.setHasVisited(hasVisited != 0);
+        AreaLocation areaLocation = new AreaLocation(title, locationType, description, latitude, longitude);
+        areaLocation.setId(UUID.fromString(uuidString));
+        areaLocation.setPicturePath(picturePath);
+        areaLocation.setPhoneNumber(phoneNumber);
+        areaLocation.setWebsiteURL(websiteURL);
+        areaLocation.setHasVisited(hasVisited != 0);
 
-        return location;
+        return areaLocation;
     }
 }

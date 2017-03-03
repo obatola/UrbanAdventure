@@ -17,7 +17,7 @@ public class LocationPagerActivity extends AppCompatActivity {
             "com.example.obatolaseward_evans.urbanadventure.location_id";
 
     private ViewPager viewPager;
-    private List<Location> locations;
+    private List<AreaLocation> areaLocations;
 
     public static Intent newIntent(Context packageContext, UUID locationId) {
         Intent intent = new Intent(packageContext, LocationPagerActivity.class);
@@ -35,19 +35,19 @@ public class LocationPagerActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.activity_location_pager_view_pager);
 
-        locations = LocationLab.get(this).getLocations();
+        areaLocations = LocationLab.get(this).getLocations();
         FragmentManager fragmentManager = getSupportFragmentManager();
         viewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
 
             @Override
             public Fragment getItem(int position) {
-                Location location = locations.get(position);
-                return LocationFragment.newInstance(location.getId());
+                AreaLocation areaLocation = areaLocations.get(position);
+                return LocationFragment.newInstance(areaLocation.getId());
             }
 
             @Override
             public int getCount() {
-                return locations.size();
+                return areaLocations.size();
             }
         });
 
@@ -57,9 +57,9 @@ public class LocationPagerActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                Location location = locations.get(position);
-                if (location.getTitle() != null) {
-                    setTitle(location.getTitle());
+                AreaLocation areaLocation = areaLocations.get(position);
+                if (areaLocation.getTitle() != null) {
+                    setTitle(areaLocation.getTitle());
                 }
             }
 
@@ -67,8 +67,8 @@ public class LocationPagerActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) { }
         });
 
-        for (int i = 0; i < locations.size(); i++) {
-            if (locations.get(i).getId().equals(locationId)) {
+        for (int i = 0; i < areaLocations.size(); i++) {
+            if (areaLocations.get(i).getId().equals(locationId)) {
                 viewPager.setCurrentItem(i);
                 break;
             }

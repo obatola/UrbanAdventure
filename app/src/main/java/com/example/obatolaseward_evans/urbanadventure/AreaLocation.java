@@ -4,7 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.UUID;
 
-public class Location {
+public class AreaLocation {
 
     private UUID id;
     private String title;
@@ -17,7 +17,7 @@ public class Location {
     private String phoneNumber;
     private String websiteURL;
 
-    public Location() {
+    public AreaLocation() {
         id = UUID.randomUUID();
         title = "";
         picturePath = "";
@@ -30,7 +30,7 @@ public class Location {
 
     }
 
-    public Location(String locTitle, LocationType locType, String locDescription, double locLatitude, double locLongitude) {
+    public AreaLocation(String locTitle, LocationType locType, String locDescription, double locLatitude, double locLongitude) {
         id = UUID.randomUUID();
         title = locTitle;
         locationType = locType;
@@ -42,7 +42,7 @@ public class Location {
     }
 
     //constructor for db with locType = int
-    public Location(String locTitle, int locType, String locDescription, double locLatitude, double locLongitude) {
+    public AreaLocation(String locTitle, int locType, String locDescription, double locLatitude, double locLongitude) {
         id = UUID.randomUUID();
         title = locTitle;
         description = locDescription;

@@ -15,12 +15,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
@@ -43,26 +40,20 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
 import static android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT;
-import static com.google.android.gms.auth.api.credentials.PasswordSpecification.gt;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
         GoogleApiClient.ConnectionCallbacks, LocationListener {
 
     private GoogleMap mMap;
-    private List<Location> allLocations = new ArrayList<Location>();
+    private List<AreaLocation> allAreaLocations = new ArrayList<AreaLocation>();
     private LocationLab locationLab;
 
     /**
@@ -100,8 +91,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             populateDatabase();
         } else {
             //make sure not duplicating
-            allLocations.clear();
-            allLocations.addAll(locationLab.getLocations());
+            allAreaLocations.clear();
+            allAreaLocations.addAll(locationLab.getLocations());
         }
 
 
@@ -207,12 +198,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             populateDatabase();
         } else {
             //make sure not duplicating
-            allLocations.clear();
-            allLocations.addAll(locationLab.getLocations());
+            allAreaLocations.clear();
+            allAreaLocations.addAll(locationLab.getLocations());
         }
 
         // Add a marker in WPI and move the camera
-        Location wpi = allLocations.get(0);
+        AreaLocation wpi = allAreaLocations.get(0);
         if (wpi != null) {
             mMap.addMarker(new MarkerOptions().position(wpi.getLatLng()).title(wpi.getTitle()));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(wpi.getLatLng(), 16));
@@ -227,7 +218,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 buildGoogleApiClient();
                 // Although the user’s location will update automatically on a regular basis, you can also
                 // give your users a way of triggering a location update manually. Here, we’re adding a
-                // ‘My Location’ button to the upper-right corner of our app; when the user taps this button,
+                // ‘My AreaLocation’ button to the upper-right corner of our app; when the user taps this button,
                 // the camera will update and center on the user’s current location//
 
                 mMap.setMyLocationEnabled(true);
@@ -250,7 +241,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mGoogleApiClient.connect();
     }
 
-    private List<Location> populateDatabase() {
+    private List<AreaLocation> populateDatabase() {
         // WPI Facility Locations
         String wpid = "Worcester Polytechnic Institute was founded in 1865 to create and convey the latest science and " +
                 "engineering knowledge in ways that are most beneficial to society. Today, WPI holds firm to its founding " +
@@ -258,7 +249,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 "of our two original buildings, pictured above. WPI's 14 academic departments offer more than 50 " +
                 "undergraduate and graduate degree programs in science, engineering, technology, business, the social " +
                 "sciences, and the humanities and arts, leading to bachelor’s, master’s, and doctoral degrees. ";
-        Location wpi = new Location("Worcester Polytechnic Institute", LocationType.WPIFACILITY, wpid, 42.2746, -71.8063);
+        AreaLocation wpi = new AreaLocation("Worcester Polytechnic Institute", LocationType.WPIFACILITY, wpid, 42.2746, -71.8063);
         wpi.setWebsiteURL("https://www.wpi.edu");
         wpi.setPhoneNumber("5088315000");
         wpi.setPicturePath("wpi");
@@ -266,19 +257,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         String rec = "The Sports & Recreation Center offers many opportunities for fitness, recreation, weight lifting, cardio " +
                 "exercise, swimming, racquet sports, yoga, and aerobics. Spread across four floors, the Sports & Recreation " +
                 "Center serves our varsity athletes as well as our community members maintaining their fitness regimen.";
-        Location recCenter = new Location("Rec Center", LocationType.WPIFACILITY, rec, 42.274205, -71.810708);
+        AreaLocation recCenter = new AreaLocation("Rec Center", LocationType.WPIFACILITY, rec, 42.274205, -71.810708);
         recCenter.setPicturePath("rec");
 
         String fuller = "The Sports & Recreation Center offers many opportunities for fitness, recreation, weight lifting, " +
                 "cardio exercise, swimming, racquet sports, yoga, and aerobics. Spread across four floors, the Sports & " +
                 "Recreation Center serves our varsity athletes as well as our community members maintaining their fitness regimen.";
-        Location fullerLabs = new Location("Fuller Labs", LocationType.WPIFACILITY, fuller, 42.275060, -71.806522);
+        AreaLocation fullerLabs = new AreaLocation("Fuller Labs", LocationType.WPIFACILITY, fuller, 42.275060, -71.806522);
         fullerLabs.setPicturePath("fuller");
 
         String lib = "Opened in 1967, George C. Gordon Library is named for one of its benefactors who graduated from WPI " +
                 "with an electrical engineering degree in 1895. Gordon generously bequeathed $5 million of his estate to the Institute in 1964. " +
                 "Today, Gordon Library is one of the busiest buildings on campus-with an average of 13,000+ visitors per week during the academic year.";
-        Location library = new Location("Gordon Library", LocationType.WPIFACILITY, lib, 42.274229, -71.806352);
+        AreaLocation library = new AreaLocation("Gordon Library", LocationType.WPIFACILITY, lib, 42.274229, -71.806352);
         library.setPicturePath("lib");
 
         String cc = "WPI’s Rubin Campus Center is at the crossroads of the campus. Whether you want to pick up your mail, grab a cup of coffee, " +
@@ -286,7 +277,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 "of Student Affairs and Campus Life , as well as a comfortable location to study or visit with friends. Enjoy a concert on " +
                 "the patio, meet for lunch, catch a comedy show on the stage in the Food Court, reserve a room for a meeting, grab a coffee at " +
                 "Dunkin' Donuts, or relax in the Class of 1946 Lounge.";
-        Location campusCenter = new Location("Campus Center", LocationType.WPIFACILITY, cc, 42.274907, -71.808482);
+        AreaLocation campusCenter = new AreaLocation("Campus Center", LocationType.WPIFACILITY, cc, 42.274907, -71.808482);
         campusCenter.setPicturePath("cc");
 
         String gate = "This growing center of research, innovation, and commerce is located in downtown Worcester just a short walk from" +
@@ -294,7 +285,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 " blighted and underutilized area in into a clean, thriving, mixed-use facility for a range of academic, research, and " +
                 "commercial enterprises. WPI became the sole owner of Gateway Park in 2010 and is pursing the build-out of the park in " +
                 "partnership with companies in the region.";
-        Location gateway = new Location("Gateway Park", LocationType.WPIFACILITY, gate, 42.275387, -71.799020);
+        AreaLocation gateway = new AreaLocation("Gateway Park", LocationType.WPIFACILITY, gate, 42.275387, -71.799020);
         gateway.setPicturePath("gateway");
 
         // Food Locations
@@ -304,7 +295,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 "in small batches and shipped several times a week. Only  premium quality roasted beans are selected and " +
                 "carefully brewed for every cup in order to meet and exceed the customers’ continued high " +
                 "expectations. All beans are bought Direct-Trade single origin.";
-        Location beanCounter = new Location("The Bean Counter", LocationType.FOOD, bean, 42.271729, -71.807335);
+        AreaLocation beanCounter = new AreaLocation("The Bean Counter", LocationType.FOOD, bean, 42.271729, -71.807335);
         beanCounter.setPicturePath("bean");
 
         String boyntonDes = "The Boynton was originally a small tavern in the 1930's most often frequented by Worcester Polytechnic Institute (WPI) professors, " +
@@ -312,7 +303,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 "to have been the popular name of choice during a bygone era. Nearby is Boynton Street, Boynton Hall (the main " +
                 "administration building of WPI), and Boynton Park. You may or may not know that the frequent use of the name " +
                 "\"Boynton\" originates from John Boynton, one of the founding fathers of Worcester Polytechnic Institute. ";
-        Location boynton = new Location("The Boynton Restaurant", LocationType.FOOD, boyntonDes, 42.270867, -71.807431);
+        AreaLocation boynton = new AreaLocation("The Boynton Restaurant", LocationType.FOOD, boyntonDes, 42.270867, -71.807431);
         boynton.setPicturePath("boynton");
 
         String woo = "WooBerry was founded on simple principles: combining delicious frozen desserts with outstanding " +
@@ -320,28 +311,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 "Worcester Massachusetts, WooBerry is in close proximity to multiple universities, cultural institutions, " +
                 "retail and restaurants. Great pride is taken in being a part of the Worcester community, bringing together " +
                 "people of all ages and interests through a universal love of delicious frozen desserts.";
-        Location wooberry = new Location("Wooberry Frozen Yogurt & Ice Cream", LocationType.FOOD, woo, 42.270724, -71.808211);
+        AreaLocation wooberry = new AreaLocation("Wooberry Frozen Yogurt & Ice Cream", LocationType.FOOD, woo, 42.270724, -71.808211);
         wooberry.setPicturePath("wooberry");
 
         String fix = "Modern setting for custom burgers served with craft beers, unique cocktails & spiked milkshakes.";
-        Location theFix = new Location("The Fix", LocationType.FOOD, fix, 42.276723, -71.801415);
+        AreaLocation theFix = new AreaLocation("The Fix", LocationType.FOOD, fix, 42.276723, -71.801415);
         theFix.setPicturePath("fix");
 
         // Culture Locations
         String moore = "Moore State Park is a 737-acre public recreation area located in the town of Paxton, Massachusetts, portions of " +
                 "which were listed on the National Register of Historic Places as the Moore State Park Historic District in 2004.";
-        Location moorePond = new Location("Moore Pond", LocationType.CULTURE, moore, 42.313249, -71.957684);
+        AreaLocation moorePond = new AreaLocation("Moore Pond", LocationType.CULTURE, moore, 42.313249, -71.957684);
         moorePond.setPicturePath("moore");
 
         String art = "The Worcester Art Museum, also known by its acronym WAM, houses over 35,000 works of art dating from antiquity " +
                 "to the present day, representing cultures from all over the world.";
-        Location wam = new Location("Worcester Art Museum", LocationType.CULTURE, art, 42.273345, -71.801973);
+        AreaLocation wam = new AreaLocation("Worcester Art Museum", LocationType.CULTURE, art, 42.273345, -71.801973);
         wam.setPicturePath("wam");
 
         String newton = "The Newton Hill portion of Elm Park (west of Park Avenue) remains minimally landscaped and contains basketball " +
                 "and tennis courts, walking trails and also Doherty Memorial High School, a high school within the Worcester Public " +
                 "Schools system.";
-        Location newtonHill = new Location("Newton Hill", LocationType.CULTURE, newton, 42.267565, -71.819960);
+        AreaLocation newtonHill = new AreaLocation("Newton Hill", LocationType.CULTURE, newton, 42.267565, -71.819960);
         newtonHill.setPicturePath("newton");
 
         locationLab.addLocation(wpi);
@@ -359,17 +350,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationLab.addLocation(newtonHill);
 
         //make sure to not add duplicates
-        allLocations.clear();
-        allLocations.addAll(locationLab.getLocations());
+        allAreaLocations.clear();
+        allAreaLocations.addAll(locationLab.getLocations());
 
         return locationLab.getLocations();
     }
 
-    // Populate map with markers in allLocations
+    // Populate map with markers in allAreaLocations
     public void populateMap(GoogleMap map) {
         float markerColor;
 
-        for (Location loc : allLocations) {
+        for (AreaLocation loc : allAreaLocations) {
 
             markerColor = getCorrespondingMarkerColor(loc);
 
@@ -384,7 +375,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(this);
     }
 
-    private float getCorrespondingMarkerColor(Location loc) {
+    private float getCorrespondingMarkerColor(AreaLocation loc) {
         LocationType type = loc.getLocationType();
 
         if (loc.isHasVisited()) {
@@ -498,21 +489,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void checkIfAtLocation() {
         android.location.Location currentLoc = brain.getCurrentLocation();
 
-        for (Location location: allLocations) {
-            if (!location.isHasVisited()) { // if you haven't visited the location.
+        for (AreaLocation areaLocation : allAreaLocations) {
+            if (!areaLocation.isHasVisited()) { // if you haven't visited the areaLocation.
                 // 0.02 mi is 105 feet
-                if (0.02 >=  brain.getDistanceBetweenTwo(location.getLatitude(), location.getLongitude(), currentLoc.getLatitude(), currentLoc.getLongitude())) {
+                if (0.02 >=  brain.getDistanceBetweenTwo(areaLocation.getLatitude(), areaLocation.getLongitude(), currentLoc.getLatitude(), currentLoc.getLongitude())) {
                     Context context = getApplicationContext();
-                    CharSequence text = "Congradulations You've Visited" + location.getTitle();
+                    CharSequence text = "Congradulations You've Visited" + areaLocation.getTitle();
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
 
-                    // set location in alllocations as visited:
-                    location.setHasVisited(true);
-                    // update location in db as visited:
-                    locationLab.updateLocation(location);
+                    // set areaLocation in alllocations as visited:
+                    areaLocation.setHasVisited(true);
+                    // update areaLocation in db as visited:
+                    locationLab.updateLocation(areaLocation);
                 }
             }
         }
