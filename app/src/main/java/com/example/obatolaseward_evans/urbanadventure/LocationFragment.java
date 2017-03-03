@@ -87,8 +87,18 @@ public class LocationFragment extends Fragment {
         return v;
     }
 
+    private boolean isEmptyString(String string) {
+        if (string == null) {
+            return true;
+        } else if (string.length() == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private void initializeButtons() {
-        if (areaLocation.getPhoneNumber() == null) {
+        if (isEmptyString(areaLocation.getPhoneNumber())) {
             Log.d("locationdetailview", "phone number: " + areaLocation.getPhoneNumber());
             phoneButton.setVisibility(View.GONE);
         } else {
@@ -101,7 +111,7 @@ public class LocationFragment extends Fragment {
             });
         }
 
-        if (areaLocation.getWebsiteURL() == null) {
+        if (isEmptyString(areaLocation.getWebsiteURL())) {
             websiteButton.setVisibility(View.GONE);
         } else {
             websiteButton.setVisibility(View.VISIBLE);
@@ -112,24 +122,6 @@ public class LocationFragment extends Fragment {
                 }
             });
         }
-//
-//        phoneButton.setVisibility(View.VISIBLE);
-//        phoneButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d(null, areaLocation.getPhoneNumber());
-//                callPhoneNumber(areaLocation.getPhoneNumber());
-//            }
-//        });
-//
-//        websiteButton.setVisibility(View.VISIBLE);
-//        websiteButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d(null, areaLocation.getWebsiteURL());
-//                openWebsite(areaLocation.getWebsiteURL());
-//            }
-//        });
 
         directionButton.setOnClickListener(new View.OnClickListener() {
             @Override
